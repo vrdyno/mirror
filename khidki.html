@@ -133,13 +133,13 @@
   <p>
              Select Webcam
             </p>         
-                      <select id="video-devices"></select>
-
+            <select id="video-devices"></select>
             <select id="audio-devices" style="display: none"></select>
             <br />
             <br />
-            <button id="select-device"   ">Select Device</button>
-            <br />
+      <button id="switch-camera" >Switch Webcam</button>
+      <button id="switch-microphone" style="display: none" ></button>      
+                      <br />
  <div id="videos-container" style="height: 480; width: 640;" ></div>
 <div  style=" display:none; id="chat-container">
     <input type="text" id="input-text-chat" placeholder="..." disabled>
@@ -277,6 +277,9 @@
 // ......................................................
 document.getElementById('open-room').onclick = function() {
     this.disabled = true;
+    connection.extra = {
+  userid: document.getElementById('user-id').value
+};
     connection.open(document.getElementById('room-id').value);
 };
 document.getElementById('join-room').onclick = function() {
@@ -323,34 +326,98 @@ function appendDIV(event) {
 
 var connection = new RTCMultiConnection();
 connection.extra = {
-  userid: (document.getElementById('user-id').value)
+  userid: document.getElementById('user-id').value
 };
 
 /////selelct camera code///
 
-     connection.setDefaultEventsForMediaElement = false;
+  var videoDevices = document.getElementById('video-devices');
+            var audioDevices = document.getElementById('audio-devices');
 
-        connection.enumerateDevices(function(devices) {
-            devices.forEach(appendOption);
+            connection.DetectRTC.load(function() {
+                connection.DetectRTC.MediaDevices.forEach(function(device) {
+                    if(document.getElementById(device.id)) {
+                        return;
+                    }
 
-            function appendOption(device) {
-                var option = document.createElement('option');
-                option.innerHTML = device.label || (device.kind + ': ' + device.deviceId);
-                option.value = device.deviceId;
+                    if(device.kind === 'audioinput') {
+                        var option = document.createElement('option');
+                        option.id = device.id;
+                        option.innerHTML = device.label || device.id;
+                        option.value = device.id;
+                        audioDevices.appendChild(option);
 
-                if (device.kind.indexOf('audio') !== -1) {
-                    selectAudioDevices.appendChild(option);
-                } else selectVideoDevices.appendChild(option);
-            }
-        });
+                        if(connection.mediaConstraints.audio.optional.length && connection.mediaConstraints.audio.optional[0].sourceId === device.id) {
+                            option.selected = true;
+                        }
+                    }
 
-        document.getElementById('select-device').onclick = function() {
-            this.disabled = true;
-            connection.selectDevices(selectAudioDevices.value, selectVideoDevices.value);
-        };
+                    if(device.kind.indexOf('video') !== -1) {
+                        var option = document.createElement('option');
+                        option.id = device.id;
+                        option.innerHTML = device.label || device.id;
+                        option.value = device.id;
+                        videoDevices.appendChild(option);
 
-        var selectAudioDevices = document.getElementById('audio-devices');
-        var selectVideoDevices = document.getElementById('video-devices');
+                        if(connection.mediaConstraints.video.optional.length && connection.mediaConstraints.video.optional[0].sourceId === device.id) {
+                            option.selected = true;
+                        }
+                    }
+                });
+            });
+
+            document.getElementById('switch-camera').onclick = function() {
+                var videoSourceId = videoDevices.value;
+
+                if(connection.mediaConstraints.video.optional.length && connection.attachStreams.length) {
+                    if(connection.mediaConstraints.video.optional[0].sourceId === videoSourceId) {
+                        alert('Selected video device is already selected.');
+                        return;
+                    }
+                }
+
+                connection.attachStreams.forEach(function(stream) {
+                    stream.getVideoTracks().forEach(function(track) {
+                        stream.removeTrack(track);
+
+                        if(track.stop) {
+                            track.stop();
+                        }
+                    });
+                });
+
+                connection.mediaConstraints.video.optional = [{
+                    sourceId: videoSourceId
+                }];
+
+            };
+
+            document.getElementById('switch-microphone').onclick = function() {
+                var audioSourceId = audioDevices.value;
+
+                if(connection.mediaConstraints.audio.optional.length && connection.attachStreams.length) {
+                    if(connection.mediaConstraints.audio.optional[0].sourceId === audioSourceId) {
+                        alert('Selected audio device is already selected.');
+                        return;
+                    }
+                }
+
+                connection.attachStreams.forEach(function(stream) {
+                    stream.getAudioTracks().forEach(function(track) {
+                        stream.removeTrack(track);
+
+                        if(track.stop) {
+                            track.stop();
+                        }
+                    });
+                });
+
+                connection.mediaConstraints.audio.optional = [{
+                    sourceId: videoSourceId
+                }];
+
+                connection.captureUserMedia();
+            };
 
 
 ///select camera////
@@ -370,8 +437,7 @@ connection.onstream = function(event) {
   console.log(event.extra.userid);
     document.body.appendChild(event.mediaElement);
                videosContainer.insertBefore(event.mediaElement, videosContainer.firstChild);
-                event.mediaElement.play();
-
+                 event.mediaElement.play();
 
 
 };
@@ -389,3 +455,4 @@ connection.onopen = function() {
     
 </body>
 </html>
+
