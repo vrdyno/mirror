@@ -118,9 +118,11 @@
 <button id="open-room"    class="btn btn-sub" >Open Room</button>
 
 <br><br>
-   <label for="room-id">Enter Room Id </label>
-<input type="text" id="room-id" value="wanClouds">
-
+   <label for="room-id">Room Id </label>
+<input type="text" id="room-id" value="wanClouds"></br>
+   <label for="room-id">User Id </label> 
+<input type="text" id="user-id" value=""  placeholder="id is optional">
+ 
 <button id="open-or-join-room"  style=" display:none;">Auto Open Or Join Room</button>
 <hr>
 
@@ -321,6 +323,9 @@ function appendDIV(event) {
 // ......................................................
 
 var connection = new RTCMultiConnection();
+connection.extra = {
+  userid: (document.getElementById('user-id').value)
+};
 
 /////selelct camera code///
 
@@ -363,9 +368,11 @@ connection.sdpConstraints.mandatory = {
     OfferToReceiveVideo: true
 };
 connection.onstream = function(event) {
+  console.log(event.extra.userid);
     document.body.appendChild(event.mediaElement);
                videosContainer.insertBefore(event.mediaElement, videosContainer.firstChild);
                 event.mediaElement.play();
+
 
 
 };
@@ -383,4 +390,3 @@ connection.onopen = function() {
     
 </body>
 </html>
-
