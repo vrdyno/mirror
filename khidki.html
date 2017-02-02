@@ -484,7 +484,10 @@ connection.sdpConstraints.mandatory = {
    // if (e.type == 'local') {
 var vid = document.createElement("video");  
 if(e.extra.userid=="doctor"){
+	        localVideo.muted = true;
+
           attachMediaStream(localVideo, e.stream);
+
 localVideo.play();
 
 
@@ -498,6 +501,8 @@ vid.id=e.extra.userid;
 
 
 vid.controls =true;
+        vid.muted = true;
+
          attachMediaStream(vid, e.stream);
 
  
