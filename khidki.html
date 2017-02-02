@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>KHIDKI</title>
+  <title>Bootstrap Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -95,7 +95,7 @@ p {
 
   </style>
 </head>
-<body>
+<body style="background-color: #DCD8CF">
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -127,11 +127,11 @@ p {
       <a  >Select a Webcam</a>
             </p>         
             <select id="video-devices"></select>
-            <select id="audio-devices" style="display: none"></select>
+            <select id="audio-devices" ></select>
             <br />
             <br />
       <button id="switch-camera" >Accept Webcam</button>
-      <button id="switch-microphone" style="display: none" ></button>   
+      <button id="switch-microphone"  >Accept Mic</button>   
 </div>
 
 
@@ -187,8 +187,7 @@ function closeNav() {
 <!-- socket.io for signaling -->
 <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
 
-<hr>
-
+ 
 
 
 
@@ -196,16 +195,13 @@ function closeNav() {
  
 
 
-  <div class="row">
+  <div class="row" style="margin-top: 6px;">
   
-    <div class="col-sm-8">
+    <div class="col-sm-11">
 
-    <div  style="  background-color: #C9C9C9">
-     <p  style="  color: #575757;   font-family: Arial, Helvetica, sans-serif;
-   text-align: center;">
-             Collabration Canvas
-            </p> 
-    <div class="row">
+    <div  style=" height: 800; background-color: #C9C9C9">
+     
+    <div class="row" >
     <div class="col-sm-1">
 <div style=" width: 35px; margin-left: 5px;
     height: 35px;
@@ -252,12 +248,12 @@ function closeNav() {
 
     </div>
 
-    <div class="col-sm-7">
+    <div class="col-sm-10" style="overflow: hidden;">
 
 
   
 
-    <video  style="margin: 10px;" id="board" width=850  controls ></video>
+    <video  style="margin: 10px;" id="board" width=1400  controls ></video>
  
 </div>
 </div>
@@ -265,10 +261,10 @@ function closeNav() {
 </div>
     </div>
   
-    <div id="parent-peers-view" class="col-sm-4"  >
-<div id="peers-view" style="  background-color:#9AD3DE;    margin-right: 10px; height: 400px;">
-     <p  style=" color: #575757 ; font-family: Arial, Helvetica, sans-serif; text-align: center;">
-             All Connected Peers </p>
+    <div id="parent-peers-view" class="col-sm-1"  >
+<div id="peers-view" style="     overflow: hidden;
+ background-color:#9AD3DE;    margin-right: 10px; height: 970px;">
+    
      
             </div>
             </div>
@@ -287,7 +283,7 @@ function closeNav() {
      
  
 
-<footer  style=" margin-top: 8cm;"  
+<footer  style=" margin-top: 6cm;"  
  class="container-fluid text-center">
   <p>Made by WanClouds
 </p>
@@ -495,9 +491,12 @@ localVideo.play();
 }
 else{
 vid.id=e.extra.userid;
- vid.width = "80";
-vid.height = "60";
-vid.style.margin= "12px";
+    //vid.width= "80%"; 
+
+ vid.width = "120";
+ vid.style.margin= "12px";
+
+
 vid.controls =true;
          attachMediaStream(vid, e.stream);
 
@@ -518,8 +517,7 @@ vid.controls =true;
   } 
 };
 
-
-
+ 
 
    attachMediaStream = function(element, stream) {
         if (typeof element.srcObject !== 'undefined') {
