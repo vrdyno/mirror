@@ -248,12 +248,12 @@ function closeNav() {
 
     </div>
 
-    <div class="col-sm-10" style="overflow: hidden;">
+    <div id="colab-div" class="col-sm-10" style="overflow: hidden; ">
 
 
   
 
-    <video  style="margin: 10px;" id="board" width=1000  controls ></video>
+    <video  style="margin: 10px;" id="board"   controls ></video>
  
 </div>
 </div>
@@ -263,7 +263,7 @@ function closeNav() {
   
     <div id="parent-peers-view" class="col-sm-1"  >
 <div id="peers-view" style="     overflow: hidden;
- background-color:#9AD3DE;    margin-right: 10px; height: 970px;">
+ background-color:#9AD3DE;    margin-right: 10px;  height: 970px;">
     
      
             </div>
@@ -468,6 +468,9 @@ connection.extra = {
 
 ///select camera////
 var localVideo = document.getElementById('board');  //this is the remote stream handler
+//var divpeer = document.getElementById('peers-view');
+//console.log(divpeer.style.width);
+//console.log ( '#someButton was clicked' );
 
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 connection.enableFileSharing = true; // by default, it is "false".
@@ -486,30 +489,60 @@ var vid = document.createElement("video");
 if(e.extra.userid=="doctor"){
 	        localVideo.muted = true;
 
-          attachMediaStream(localVideo, e.stream);
+//flexible gui code
 
+
+                    var colabEleStyle = window.getComputedStyle(document.getElementById("colab-div"));
+ console.log(colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+  
+  var percentColabwidth=(colabEleWidth /100)*80;
+ 
+   percentColabwidth.toString();
+  // vid.width = percentwidth;
+//localVideo.width=percentColabwidth.toString();
+ //vid.style.margin= percentmargin.toString()+"px";
+ console.log(percentColabwidth.toString());
+
+localVideo.width=percentColabwidth.toString();
+
+////flexible gui code
+
+
+
+          attachMediaStream(localVideo, e.stream);
 localVideo.play();
 
 
 }
 else{
 vid.id=e.extra.userid;
-    //vid.width= "80%"; 
+    //all flexible gui code
+                    var eleStyle = window.getComputedStyle(document.getElementById("peers-view"));
+var eleWidth = parseFloat(eleStyle.width);
+  
+  var percentwidth=(eleWidth/100)*90;
+       var percentmargin=(percentwidth/100)*5;
 
- vid.width = "81";
- vid.style.margin= "8px";
+   percentwidth.toString();
+   vid.width = percentwidth;
 
+ vid.style.margin= percentmargin.toString()+"px";
+ //console.log(percentmargin.toString()+"px");
 
-vid.controls =true;
+ vid.controls =true;
         vid.muted = true;
 
          attachMediaStream(vid, e.stream);
 
  
+    //all flexible gui code
 
  
   document.getElementById("peers-view").appendChild(vid); 
                     vid.play();
+
+
 
    //localVideo.play(); 
 
