@@ -6,9 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+<script src="//js.leapmotion.com/0.2.0-beta1/leap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="//js.leapmotion.com/0.2.0-beta1/leap.min.js"></script>
+
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -124,6 +126,12 @@ p {
      margin: 4px 2px;"  class="navbar-brand"  type="text" id="user-id" value=""  placeholder="Enter User Id"></li>
 <li> <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+<a  >Set Dicom Image</a>
+Dicom Url: <input type="url" id="dicomUrl" value="" placeholder="paste dicom link"><button onclick="setDicomUrl()">Set URL</button>
+
+
+
       <a  >Select a Webcam</a>
             </p>         
             <select id="video-devices"></select>
@@ -144,6 +152,10 @@ p {
   
  
 
+<style>
+  html, body { width: 100%; height: 100%; margin: 0; padding: 0}
+  #leap-overlay { position: fixed; top: 0; left: 0;}
+</style>
 
 <script>
 function openNav() {
@@ -248,12 +260,48 @@ function closeNav() {
 
     </div>
 
-    <div id="colab-div" class="col-sm-10" style="overflow: hidden; ">
+<div id="colab-div" class="col-sm-6" style="overflow: hidden; ">
+
+
+  
+
+   <div id="canvasesdiv" style="position:relative; width:800px; height:800px">
+<canvas id="dicom"
+style="z-index: 1;
+position:absolute;
+left:0px;
+top:0px;
+" height="800px" width="800px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<canvas id="leap-client"
+style="z-index: 2;
+position:absolute;
+left:0px;
+top:0px;
+" height="600px" width="600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<canvas id="leap-overlay"
+style="z-index: 3;
+position:absolute;
+left:0px;
+top:0px;
+" height="600px" width="600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+</div>
+
+ 
+</div>
+    <div id="colab-div" class="col-sm-4" style="overflow: hidden; ">
 
 
   
 
     <video  style="margin: 10px;" id="board"   controls ></video>
+     <canvas  id="s"></canvas>
+
  
 </div>
 </div>
@@ -285,6 +333,9 @@ function closeNav() {
 
 <footer  style=" margin-top: 6cm;"  
  class="container-fluid text-center">
+ <button>Add image</button><span></span>
+
+ 
   <p>Made by WanClouds
 </p>
  
@@ -297,6 +348,7 @@ function closeNav() {
 <script src="js/RTCMultiConnection.js"></script>
 
 <script type="text/javascript">
+var flagopen = false; //bool
 
     
 function fullscreen() { 
@@ -317,7 +369,10 @@ document.getElementById('open-room').onclick = function() {
 
 
     connection.extra = {
-  userid: document.getElementById('user-id').value
+  userid: document.getElementById('user-id').value,
+  dicomUrl: document.getElementById('dicomUrl').value
+
+  //only open room user is the admin and he can set the dicom url
 };
     connection.open(document.getElementById('room-id').value);
 
@@ -483,6 +538,15 @@ connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
 };
+
+/* 
+connection.bandwidth = {
+    audio: 50,
+    video: 256,
+    data: 3638400,
+    screen: 300      // 300kbps
+};
+*/
  connection.onstream = function(e) {
    // if (e.type == 'local') {
 var vid = document.createElement("video");  
@@ -493,16 +557,16 @@ if(e.extra.userid=="doctor"){
 
 
                     var colabEleStyle = window.getComputedStyle(document.getElementById("colab-div"));
- console.log(colabEleStyle.width);
+ //console.log(colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
   
-  var percentColabwidth=(colabEleWidth /100)*80;
+  var percentColabwidth=(colabEleWidth /100)*70;
  
    percentColabwidth.toString();
   // vid.width = percentwidth;
 //localVideo.width=percentColabwidth.toString();
  //vid.style.margin= percentmargin.toString()+"px";
- console.log(percentColabwidth.toString());
+// console.log(percentColabwidth.toString());
 
 localVideo.width=percentColabwidth.toString();
 
@@ -552,10 +616,23 @@ var eleWidth = parseFloat(eleStyle.width);
 
     
  //}
-  } 
+  }
+  //set url and display in canvas
+  dicomUrl= e.extra.dicomUrl;
+
 };
 
  
+///////////////////////collabration////////////////
+
+
+
+ 
+
+///////////////////////////collabration//////////////////////
+
+
+
 
    attachMediaStream = function(element, stream) {
         if (typeof element.srcObject !== 'undefined') {
@@ -570,13 +647,180 @@ var eleWidth = parseFloat(eleStyle.width);
 
  
     };
-connection.onmessage = appendDIV;
+
+//connection.onmessage = appendDIV;
 connection.filesContainer = document.getElementById('file-container');
 connection.onopen = function() {
+flagopen=true;
+drawImageDicom();
+alert(connection.getAllParticipants().length);
+  // setInterval(function() {
+       //   console.log("msg send") ;
+
+        //    connection.send('collab test'+document.getElementById('user-id').value);
+        //}, 5000);
+
+
+
     document.getElementById('share-file').disabled      = false;
     document.getElementById('input-text-chat').disabled = false;
 };
+
+
+
+////
+
+
+////
+var handEvent;
+
+ 
+
+connection.onmessage = function(event) {
+var url=event.extra.dicomUrl ;  
+ // console.log("dicom url"+url) ;
+handEvent=event;
+
+       if (event.extra.userid == "doctor") {
+       if(flagopen){
+var loc=JSON.parse(handEvent.data);
+  //console.log("x"+loc[0]+"  y "+loc[1] ) ;
+var pos=loc;
+    var radius = 30;
+      //  console.log(radius);
+var canvasclient = document.getElementById("leap-client");
+  
+  // fullscreen
+  canvasclient.width = 640;
+  canvasclient.height = 480;
+  
+  // create a rendering context
+  var ctxcl = canvasclient.getContext("2d");
+  ctxcl.translate(canvasclient.width/2,canvasclient.height);
+  ctxcl.fillStyle = "#FF0000";
+
+
+      ctxcl.beginPath();
+      ctxcl.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+      ctxcl.fill();       }
+  }
+
+ };
+
+ ///
+ /* setInterval(function() {
+       //   console.log("msg send") ;
+       if(flagopen){
+var loc=JSON.parse(handEvent.data);
+  //console.log("x"+loc[0]+"  y "+loc[1] ) ;
+var pos=loc;
+    var radius = 30;
+      //  console.log(radius);
+var canvasclient = document.getElementById("leap-client");
+  
+  // fullscreen
+  canvasclient.width = 640;
+  canvasclient.height = 480;
+  
+  // create a rendering context
+  var ctxcl = canvasclient.getContext("2d");
+  ctxcl.translate(canvasclient.width/2,canvasclient.height);
+  ctxcl.fillStyle = "#FF0000";
+
+
+      ctxcl.beginPath();
+      ctxcl.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+      ctxcl.fill();       }
+
+        //    connection.send('collab test'+document.getElementById('user-id').value);
+      }, 1);
+*/
+
+ ///
+
+ 
+
+
 </script>
+
+
+<script>
+  var canvas = document.getElementById("leap-overlay");
+  
+  // fullscreen
+  canvas.width = 640
+  canvas.height = 480;
+  
+  // create a rendering context
+  var ctx = canvas.getContext("2d");
+  ctx.translate(canvas.width/2,canvas.height);
+  ctx.fillStyle = "rgba(0,2,3,0.7)";
+  var position
+  // render each frame
+  function draw(obj) {
+    // clear last frame
+    ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
+  
+    // render circles based on pointable positions
+    var pointablesMap = obj.pointablesMap;
+    for (var i in pointablesMap) {
+      // get the pointable's position
+      var pointable = pointablesMap[i];
+      var pos = pointable.tipPosition;
+      position=pos;
+ // console.log(pos);
+     ///sending
+
+
+
+
+     ///sending
+
+
+
+      // create a circle for each pointable
+      var radius = 5
+      //Math.min(600/Math.abs(pos[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+      ctx.fill();
+        if(flagopen){
+            connection.send(JSON.stringify(position));
+       }
+    }
+  };
+
+ // setInterval(function() {
+       //   console.log("msg send") ;
+     
+
+        //    connection.send('collab test'+document.getElementById('user-id').value);
+  //    }, 0.001);
+
+  
+  // listen to Leap Motion
+  Leap.loop(draw);
+var dicomUrl="";
+function drawImageDicom(){
+    var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+    
+    img.onload = function(){
+        ctximg.drawImage(img, 0, 0, 500, 500);
+     };
+    img.src = dicomUrl;
+ }
+
+ 
+
+function setDicomUrl() {
+dicomUrl=document.getElementById("dicomUrl").value;
+drawImageDicom()
+}
+
+ </script>
 
 
 
