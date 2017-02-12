@@ -124,7 +124,8 @@ p {
     text-decoration: none;
     display: inline-block;
      margin: 4px 2px;"  class="navbar-brand"  type="text" id="user-id" value=""  placeholder="Enter User Id"></li>
-<li> <div id="mySidenav" class="sidenav">
+<li> 
+<div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
 <a  >Set Dicom Image</a>
@@ -154,7 +155,7 @@ Dicom Url: <input type="url" id="dicomUrl" value="" placeholder="paste dicom lin
 
 <style>
   html, body { width: 100%; height: 100%; margin: 0; padding: 0}
-  #leap-overlay { position: fixed; top: 0; left: 0;}
+ 
 </style>
 
 <script>
@@ -168,7 +169,18 @@ function closeNav() {
 
 
 
+(function (nav) {
+  "use strict";
 
+
+  nav.getUserMedia = nav.getUserMedia ||
+                     nav.oGetUserMedia ||
+                     nav.msGetUserMedia ||
+                     nav.mozGetUserMedia ||
+                     nav.webkitGetUserMedia;
+
+
+})( navigator);
 
 
 
@@ -219,21 +231,16 @@ function closeNav() {
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">create</i>
+ <i id="enableDrawing" style="margin: 5px" class="material-icons">create</i>
 </div>
 <div style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">brush</i>
+ <i id="disableDrawing" style="margin: 5px" class="material-icons">close</i>
 </div>
-<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
-    height: 35px;
-    border: 1px solid Black;
-    box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">clear</i>
-</div>
-<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
+
+<div  style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
@@ -243,67 +250,97 @@ function closeNav() {
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">crop</i>
+ <i id="fullscreen" style="margin: 5px" class="material-icons">launch</i>
 </div>
-<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
+<div id="dicom-zoom-in" style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">file_upload</i>
+ <i style="margin: 5px" class="material-icons">zoom_in</i>
 </div>
-<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
+<div id="dicom-zoom-out" style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">file_download</i>
+ <i style="margin: 5px" class="material-icons">zoom_out</i>
+</div>
+
+<div id="video-zoom-in" style=" width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_in</i>
+</div>
+<div id="video-zoom-out" style=" width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_out</i>
 </div>
 
     </div>
 
-<div id="colab-div" class="col-sm-6" style="overflow: hidden; ">
+<div id="colab-div" class="col-sm-10" style="overflow: hidden; ">
 
 
   
 
-   <div id="canvasesdiv" style="position:relative; width:800px; height:800px">
+   <div id="canvasesdiv" style="position:relative; width:1400px; height:700px">
 <canvas id="dicom"
 style="z-index: 1;
 position:absolute;
 left:0px;
 top:0px;
-" height="800px" width="800px">
+" width=1400px; height=700px; >
 This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
-<canvas id="leap-client"
+<video  
 style="z-index: 2;
 position:absolute;
 left:0px;
 top:0px;
-" height="600px" width="600px">
-This text is displayed if your browser does not support HTML5 Canvas.
-</canvas>
-<canvas id="leap-overlay"
+" id="board" width="250px"  >
+  
+</video>
+
+<canvas id="drawing-surface"
 style="z-index: 3;
 position:absolute;
 left:0px;
 top:0px;
-" height="600px" width="600px">
+" height="900px" width="1600px">
 This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
+<canvas id="remote-drawing-surface"
+style="z-index: 4;
+position:absolute;
+left:0px;
+top:0px;
+" height="900px" width="1600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<canvas id="leap-client"
+style="z-index: 5;
+position:absolute;
+left:0px;
+top:0px;
+" height="900px" width="1600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<canvas id="leap-overlay"
+style="z-index: 6;
+position:absolute;
+left:0px;
+top:0px;
+" height="900px" width="1600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+
 </div>
 
  
 </div>
-    <div id="colab-div" class="col-sm-4" style="overflow: hidden; ">
 
-
-  
-
-    <video  style="margin: 10px;" id="board"   controls ></video>
-     <canvas  id="s"></canvas>
-
- 
-</div>
 </div>
 
 </div>
@@ -351,15 +388,7 @@ This text is displayed if your browser does not support HTML5 Canvas.
 var flagopen = false; //bool
 
     
-function fullscreen() { 
-    localVideo.width = 920; 
-} 
 
- 
-
-function halfscreen() { 
-    localVideo.width = 640; 
-} 
     // ......................................................
 // .......................UI Code........................
 // ......................................................
@@ -556,19 +585,19 @@ if(e.extra.userid=="doctor"){
 //flexible gui code
 
 
-                    var colabEleStyle = window.getComputedStyle(document.getElementById("colab-div"));
+                   // var colabEleStyle = window.getComputedStyle(document.getElementById("colab-div"));
  //console.log(colabEleStyle.width);
- var colabEleWidth = parseFloat(colabEleStyle.width);
+ //var colabEleWidth = parseFloat(colabEleStyle.width);
   
-  var percentColabwidth=(colabEleWidth /100)*70;
+ // var percentColabwidth=(colabEleWidth /100)*70;
  
-   percentColabwidth.toString();
+//percentColabwidth.toString();
   // vid.width = percentwidth;
 //localVideo.width=percentColabwidth.toString();
  //vid.style.margin= percentmargin.toString()+"px";
 // console.log(percentColabwidth.toString());
 
-localVideo.width=percentColabwidth.toString();
+//localVideo.width=percentColabwidth.toString();
 
 ////flexible gui code
 
@@ -653,7 +682,7 @@ connection.filesContainer = document.getElementById('file-container');
 connection.onopen = function() {
 flagopen=true;
 drawImageDicom();
-alert(connection.getAllParticipants().length);
+//alert(connection.getAllParticipants().length);
   // setInterval(function() {
        //   console.log("msg send") ;
 
@@ -683,16 +712,27 @@ handEvent=event;
 
        if (event.extra.userid == "doctor") {
        if(flagopen){
-var loc=JSON.parse(handEvent.data);
+       	var remotepacket=JSON.parse(handEvent.data);
+       	        	console.log("onmesg  "+remotepacket.id+" - "+remotepacket.position.x);
+
+
+       	if (drawFlag==false) {
   //console.log("x"+loc[0]+"  y "+loc[1] ) ;
-var pos=loc;
-    var radius = 30;
+if (remotepacket.id =="hand"){
+	
+var pos=[];
+pos[0]=remotepacket.position.x;
+pos[1]=remotepacket.position.y;
+
+       	        	//console.log("onmesg position  "+pos[0]+" - "+pos[1]);
+
+    var radius = 70;
       //  console.log(radius);
 var canvasclient = document.getElementById("leap-client");
   
   // fullscreen
-  canvasclient.width = 640;
-  canvasclient.height = 480;
+  canvasclient.width = 1600;
+  canvasclient.height = 900;
   
   // create a rendering context
   var ctxcl = canvasclient.getContext("2d");
@@ -703,8 +743,19 @@ var canvasclient = document.getElementById("leap-client");
       ctxcl.beginPath();
       ctxcl.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
       ctxcl.fill();       }
-  }
 
+
+  }
+    if (remotepacket.id=="drawing") {
+    	var posdraw= [ ];
+posdraw[0]=remotepacket.position.x;
+posdraw[1]=remotepacket.position.y;
+
+      	drawRemoteCircle(posdraw);
+
+      }
+}
+}
  };
 
  ///
@@ -748,8 +799,8 @@ var canvasclient = document.getElementById("leap-client");
   var canvas = document.getElementById("leap-overlay");
   
   // fullscreen
-  canvas.width = 640
-  canvas.height = 480;
+canvas.width = 1600;
+canvas.height = 900;
   
   // create a rendering context
   var ctx = canvas.getContext("2d");
@@ -759,6 +810,7 @@ var canvasclient = document.getElementById("leap-client");
   // render each frame
   function draw(obj) {
     // clear last frame
+    if (drawFlag==false) {
     ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
   
     // render circles based on pointable positions
@@ -768,18 +820,10 @@ var canvasclient = document.getElementById("leap-client");
       var pointable = pointablesMap[i];
       var pos = pointable.tipPosition;
       position=pos;
- // console.log(pos);
-     ///sending
-
-
-
-
-     ///sending
-
 
 
       // create a circle for each pointable
-      var radius = 5
+      var radius = 70
       //Math.min(600/Math.abs(pos[2]),20);
       //  console.log(radius);
 
@@ -787,9 +831,25 @@ var canvasclient = document.getElementById("leap-client");
       ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
       ctx.fill();
         if(flagopen){
-            connection.send(JSON.stringify(position));
+
+var handData = {
+  "id":"",
+  "position": {
+    "x":0 ,
+    "y": 0 ,
+    "z":0
+  }
+}
+        	
+        	handData.id="hand";
+        	handData.position.x=pos[0];
+        	handData.position.y=pos[1];
+        	handData.position.z=pos[2];
+
+            connection.send(JSON.stringify(handData));
+
        }
-    }
+    }}
   };
 
  // setInterval(function() {
@@ -801,24 +861,254 @@ var canvasclient = document.getElementById("leap-client");
 
   
   // listen to Leap Motion
-  Leap.loop(draw);
-var dicomUrl="";
+ var dicomUrl="";
 function drawImageDicom(){
     var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
     
     img.onload = function(){
-        ctximg.drawImage(img, 0, 0, 500, 500);
+      var height = img.height;
+  var width = img.width;
+ // alert("width"+width);
+
+        ctximg.drawImage(img, 0, 0, width, height);
      };
     img.src = dicomUrl;
  }
-
  
 
 function setDicomUrl() {
 dicomUrl=document.getElementById("dicomUrl").value;
 drawImageDicom()
 }
+
+
+
+
+//draw
+
+var drawFlag=false;
+var Drawing = document.getElementById('drawing-surface');
+var ctxDrawing = Drawing.getContext('2d');
+var remoteDrawing = document.getElementById('remote-drawing-surface');
+var ctxRemoteDrawing = remoteDrawing.getContext('2d');
+// Get the canvasDrawing width and height
+var width = Drawing.width, height = Drawing.height;
+// Name some colors
+var red = '#F00', green = '#0F0', blue = '#00F', purple = '#A0F';
+// Create an array to save circle properties
+var circles = [ ];
+
+// Draw a circle with the given parameters:
+//   center: float array [x, y]
+//   radius: float > 0
+//   color: string "#RGB"
+//   fill: boolean
+function drawCircle(center, radius, color, fill) {
+
+	//send drawing to peer\\
+ if(drawFlag){
+	var drawingData = {
+  "id":"",
+  "position": {
+    "x":0 ,
+    "y": 0 
+  }
+}
+        	//
+        	drawingData.id="drawing";
+        	drawingData.position.x=center[0];
+        	drawingData.position.y=center[1];
+       
+	            connection.send(JSON.stringify(drawingData));
+
+	            //
+
+radius=5;
+  // Make an closed arc with a complete rotation
+ 
+  ctxDrawing.beginPath();
+  ctxDrawing.arc(center[0], center[1], radius, 0, 2*Math.PI);
+  ctxDrawing.closePath();
+  ctxDrawing.lineWidth = 10;
+  // Choose whether to fill or outline the circle
+  //if (fill) {
+    ctxDrawing.fillStyle = color;
+    ctxDrawing.fill();
+ // } else {
+  //  ctxDrawing.strokeStyle = color;
+  //  ctxDrawing.stroke();
+ // }
+}}
+
+function drawRemoteCircle(center) {
+       
+radius=5;
+fill=true;
+color= purple;
+  // Make an closed arc with a complete rotation
+  
+  ctxRemoteDrawing.beginPath();
+  ctxRemoteDrawing.arc(center[0], center[1], radius, 0, 2*Math.PI);
+  ctxRemoteDrawing.closePath();
+ ctxRemoteDrawing.lineWidth = 10;
+  // Choose whether to fill or outline the circle
+  //if (fill) {
+    ctxRemoteDrawing.fillStyle = color;
+  ctxRemoteDrawing.fill();
+ // } else {
+  //  ctxDrawing.strokeStyle = color;
+  //  ctxDrawing.stroke();
+ // }
+}
+
+
+
+// Transform Leap coordinates to canvasDrawing scene coordinates
+function leapToScene(position) {
+  var x = position[0];
+  var y = position[1];
+  // Shift the Leap origin to the canvasDrawing's bottom center and invert the y-axis
+  return [width/2 + x, height - y];
+}
+
+// Create a Leap controller to access frame data
+var controller = new Leap.Controller();
+
+// Register a callback to process frame data
+controller.on('frame', function(frame) {
+  // Clear the canvasDrawing so we can repaint
+ // ctxDrawing.clearRect(0, 0, width, height);
+  
+  // Draw a green circle to test the canvasDrawing
+ // drawCircle([width/2, 50], 20, green);
+  
+  // Make sure we have accumulated at most 200 circles
+  if (circles.length > 200) {
+    circles = circles.slice(-200); // Last 200 circles
+  }
+  
+  // Redraw accumulated circles
+  for (var c = 0; c < circles.length; c = c+1) {
+    // Retrieve the circle properties
+    var center = circles[c].center;
+    var radius = circles[c].radius;
+    // Redraw the circle filled in purple
+   // drawCircle(center, radius, purple, true);
+  }
+  
+  // Draw finger tips as colored circles
+  for (var f = 0; f < frame.fingers.length; f = f+1) {
+    var finger = frame.fingers[f];
+    // Calculate the circle center and radius
+    var center = leapToScene(finger.tipPosition);
+    var radius = Math.abs(finger.touchDistance) * 1.5;
+    // Determine if the finger is touching or not
+    var touching = finger.touchZone == 'touching';
+    // Decide the circle color and whether to fill it
+    var color;
+    var fill;
+    if (touching) {
+      color = red;
+      fill = true;
+      // Save the circle properties to redraw it later
+      var circle = {center: center, radius: radius};
+      circles.push(circle);
+    }
+    else {
+      color = blue;
+      fill = false;
+    }
+    // Finally, draw the circle
+    drawCircle(center, radius, color, fill);
+  }
+});
+
+// Connect the controller to start receiving data
+ 
+document.getElementById("enableDrawing").addEventListener("click", enableDrawing);
+document.getElementById("disableDrawing").addEventListener("click", disableDrawing);
+document.getElementById("fullscreen").addEventListener("click", fullscreen);
+document.getElementById("dicom-zoom-in").addEventListener("click", dicomZoomIn);
+
+document.getElementById("dicom-zoom-out").addEventListener("click", dicomZoomOut);
+
+document.getElementById("video-zoom-in").addEventListener("click", videoZoomIn);
+
+document.getElementById("video-zoom-out").addEventListener("click", videoZoomOut);
+
+
+
+function enableDrawing() {
+	drawFlag=true;
+ }
+ 
+function disableDrawing() {
+	drawFlag=false;
+ }
+
+function fullscreen(){
+           var el = document.getElementById('board');
+ 
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }            
+}
+
+function videoZoomIn(){
+ var el = document.getElementById('board');
+
+                               el.width=1100;
+      
+}
+function videoZoomOut(){
+                       var el = document.getElementById('board');
+
+                               el.width=100;
+      
+}
+
+function dicomZoomIn(){
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+      var height = img.height+300;
+  var width = img.width+300;
+ // alert("width"+width);
+
+        ctximg.drawImage(img, 0, 0, width, height);
+     };
+    img.src = dicomUrl;
+    
+         
+}
+
+function dicomZoomOut(){
+
+
+      
+     var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+    
+ ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+      var height = img.height-300;
+  var width = img.width-300;
+ 
+        ctximg.drawImage(img, 0, 0, width, height);
+     };
+    img.src = dicomUrl;
+ 
+         
+}
+
 
  </script>
 
