@@ -241,6 +241,12 @@ function closeNav() {
     box-sizing: border-box;">
  <i id="fullscreen" style="margin: 5px" class="material-icons">launch</i>
 </div>
+<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i id="cancelfullscreen" style="margin: 5px" class="material-icons">close</i>
+</div>
 <div id="dicom-zoom-in" style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
@@ -568,7 +574,7 @@ connection.bandwidth = {
    // if (e.type == 'local') {
 var vid = document.createElement("video");  
 if(e.extra.userid=="doctor"){
-	        localVideo.muted = true;
+            localVideo.muted = true;
 
 //flexible gui code
 
@@ -700,7 +706,7 @@ connection.onmessage = function(event) {
 if(urlPacket.url){
     if(urlPacket.url != dicomUrl){
 
-                    //console.log("url new  "+urlPacket.id+" - "+urlPacket.url);
+                   // console.log("url new  "+urlPacket.id+" - "+urlPacket.url);
                  dicomUrl=urlPacket.url;
                 drawImageDicom();
 }
@@ -711,19 +717,19 @@ handEvent=event;
 
        if (event.extra.userid == "doctor") {
        if(flagopen){
-       	var remotepacket=JSON.parse(handEvent.data);
-       	        	//console.log("onmesg  "+remotepacket.id+" - "+remotepacket.position.x);
+        var remotepacket=JSON.parse(handEvent.data);
+                    //console.log("onmesg  "+remotepacket.id+" - "+remotepacket.position.x);
 
 
-       	if (drawFlag==false) {
+        if (drawFlag==false) {
   //console.log("x"+loc[0]+"  y "+loc[1] ) ;
 if (remotepacket.id =="hand"){
-	
+    
 var pos=[];
 pos[0]=remotepacket.position.x;
 pos[1]=remotepacket.position.y;
 
-       	        	//console.log("onmesg position  "+pos[0]+" - "+pos[1]);
+                    //console.log("onmesg position  "+pos[0]+" - "+pos[1]);
 
     var radius = 70;
       //  console.log(radius);
@@ -746,11 +752,11 @@ var canvasclient = document.getElementById("leap-client");
 
   }
     if (remotepacket.id=="drawing") {
-    	var posdraw= [ ];
+        var posdraw= [ ];
 posdraw[0]=remotepacket.position.x;
 posdraw[1]=remotepacket.position.y;
 
-      	drawRemoteCircle(posdraw);
+        drawRemoteCircle(posdraw);
 
       }
 }
@@ -806,11 +812,11 @@ var handData = {
     "z":0
   }
 }
-        	
-        	handData.id="hand";
-        	handData.position.x=pos[0];
-        	handData.position.y=pos[1];
-        	handData.position.z=pos[2];
+            
+            handData.id="hand";
+            handData.position.x=pos[0];
+            handData.position.y=pos[1];
+            handData.position.z=pos[2];
 
             connection.send(JSON.stringify(handData));
 
@@ -827,7 +833,7 @@ var handData = {
 
   
   // listen to Leap Motion
-//  Leap.loop(draw);
+ // Leap.loop(draw);
 var dicomUrl="";
 function drawImageDicom(){
     var ctximg = $("#dicom")[0].getContext("2d"),
@@ -885,23 +891,23 @@ var circles = [ ];
 //   fill: boolean
 function drawCircle(center, radius, color, fill) {
 
-	//send drawing to peer\\
+    //send drawing to peer\\
  if(drawFlag){
-	var drawingData = {
+    var drawingData = {
   "id":"",
   "position": {
     "x":0 ,
     "y": 0 
   }
 }
-        	//
-        	drawingData.id="drawing";
-        	drawingData.position.x=center[0];
-        	drawingData.position.y=center[1];
+            //
+            drawingData.id="drawing";
+            drawingData.position.x=center[0];
+            drawingData.position.y=center[1];
        
-	            connection.send(JSON.stringify(drawingData));
+                connection.send(JSON.stringify(drawingData));
 
-	            //
+                //
 
 radius=5;
   // Make an closed arc with a complete rotation
@@ -1009,6 +1015,8 @@ controller.on('frame', function(frame) {
 document.getElementById("enableDrawing").addEventListener("click", enableDrawing);
 document.getElementById("disableDrawing").addEventListener("click", disableDrawing);
 document.getElementById("fullscreen").addEventListener("click", fullscreen);
+document.getElementById("cancelfullscreen").addEventListener("click", cancelfullscreen);
+
 document.getElementById("dicom-zoom-in").addEventListener("click", dicomZoomIn);
 
 document.getElementById("dicom-zoom-out").addEventListener("click", dicomZoomOut);
@@ -1020,27 +1028,67 @@ document.getElementById("video-zoom-out").addEventListener("click", videoZoomOut
 
 
 function enableDrawing() {
-	drawFlag=true;
+    drawFlag=true;
  }
  
 function disableDrawing() {
-	drawFlag=false;
+    drawFlag=false;
  }
 
-function fullscreen(){
-            var colabEleStyle = videoZoomIn;
- console.log("no parsed"+colabEleStyle.width);
+
+function cancelfullscreen(){
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
 
-   console.log("parsed "+colabEleWidth);
+   //console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=250;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+
+
+}
+
+function fullscreen(){
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+//   console.log("parsed "+colabEleWidth);
 
 
   percentColabwidth=1200;
      // console.log("parsed %  "+percentColabwidth);
-       colabEleWidth=colabEleWidth+percentColabwidth;
+       colabEleWidth=percentColabwidth;
   var zoomInWidth= colabEleWidth.toString();
 videoZoomIn.width=zoomInWidth;
+
+
 
 }
 var  videoZoomIn = document.getElementById('board');
@@ -1068,7 +1116,7 @@ var colabEleStyle = videoZoomIn;
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
 
-   //console.log("parsed "+colabEleWidth);
+ //  console.log("parsed "+colabEleWidth);
 
 
   percentColabwidth=(colabEleWidth /100)*10;
@@ -1083,11 +1131,11 @@ function dicomZoomIn(){
 
 
  var colabEleStyle = dicomeZoomInImage;
-// console.log("no parsed"+colabEleStyle.width);
+ //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
 
-  // console.log("parsed "+colabEleWidth);
+ //  console.log("parsed "+colabEleWidth);
 
 
   percentColabwidth=(colabEleWidth /100)*2;
@@ -1096,12 +1144,12 @@ function dicomZoomIn(){
      //  console.log("parsed %added "+colabEleWidth);
 var zoomInWidth= colabEleWidth.toString();
 dicomeZoomInImage.width=zoomInWidth;
-      // console.log("parsed tostring "+zoomInWidth);
+     //  console.log("parsed tostring "+zoomInWidth);
 
  var colabEleHeight = parseFloat(colabEleStyle.height);
   //colabEleHeight=colabEleHeight+100;
 
-  // console.log("parsed height "+colabEleHeight);
+   //console.log("parsed height "+colabEleHeight);
 
 
  var  percentColabHeight=(colabEleHeight /100)*2;
