@@ -125,7 +125,7 @@ p {
     display: inline-block;
      margin: 4px 2px;"  class="navbar-brand"  type="text" id="user-id" value=""  placeholder="Enter User Id"></li>
 <li> 
-<div id="mySidenav" class="sidenav">
+<div style="position:fixed; z-index: 50;"  id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
 <a  >Set Dicom Image</a>
@@ -169,18 +169,7 @@ function closeNav() {
 
 
 
-(function (nav) {
-  "use strict";
 
-
-  nav.getUserMedia = nav.getUserMedia ||
-                     nav.oGetUserMedia ||
-                     nav.msGetUserMedia ||
-                     nav.mozGetUserMedia ||
-                     nav.webkitGetUserMedia;
-
-
-})( navigator);
 
 
 
@@ -371,7 +360,6 @@ This text is displayed if your browser does not support HTML5 Canvas.
 <footer  style=" margin-top: 6cm;"  
  class="container-fluid text-center">
  
-
  
   <p>Made by WanClouds
 </p>
@@ -706,14 +694,25 @@ var handEvent;
  
 
 connection.onmessage = function(event) {
-var url=event.extra.dicomUrl ;  
- // console.log("dicom url"+url) ;
+
+    var urlPacket=JSON.parse(event.data);
+
+if(urlPacket.url){
+    if(urlPacket.url != dicomUrl){
+
+                    //console.log("url new  "+urlPacket.id+" - "+urlPacket.url);
+                 dicomUrl=urlPacket.url;
+                drawImageDicom();
+}
+}
+
+
 handEvent=event;
 
        if (event.extra.userid == "doctor") {
        if(flagopen){
        	var remotepacket=JSON.parse(handEvent.data);
-       	        	console.log("onmesg  "+remotepacket.id+" - "+remotepacket.position.x);
+       	        	//console.log("onmesg  "+remotepacket.id+" - "+remotepacket.position.x);
 
 
        	if (drawFlag==false) {
@@ -758,40 +757,7 @@ posdraw[1]=remotepacket.position.y;
 }
  };
 
- ///
- /* setInterval(function() {
-       //   console.log("msg send") ;
-       if(flagopen){
-var loc=JSON.parse(handEvent.data);
-  //console.log("x"+loc[0]+"  y "+loc[1] ) ;
-var pos=loc;
-    var radius = 30;
-      //  console.log(radius);
-var canvasclient = document.getElementById("leap-client");
-  
-  // fullscreen
-  canvasclient.width = 640;
-  canvasclient.height = 480;
-  
-  // create a rendering context
-  var ctxcl = canvasclient.getContext("2d");
-  ctxcl.translate(canvasclient.width/2,canvasclient.height);
-  ctxcl.fillStyle = "#FF0000";
-
-
-      ctxcl.beginPath();
-      ctxcl.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
-      ctxcl.fill();       }
-
-        //    connection.send('collab test'+document.getElementById('user-id').value);
-      }, 1);
-*/
-
- ///
-
  
-
-
 </script>
 
 
@@ -861,15 +827,18 @@ var handData = {
 
   
   // listen to Leap Motion
- var dicomUrl="";
+//  Leap.loop(draw);
+var dicomUrl="";
 function drawImageDicom(){
     var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
     
+         ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
       var height = img.height;
   var width = img.width;
- // alert("width"+width);
+   dicomeZoomInImage=img;
 
         ctximg.drawImage(img, 0, 0, width, height);
      };
@@ -878,6 +847,16 @@ function drawImageDicom(){
  
 
 function setDicomUrl() {
+
+var urlData = {
+  "id":"url",
+  "url": document.getElementById('dicomUrl').value
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+if(document.getElementById('dicomUrl').value != ""){
+connection.send(JSON.stringify(urlData));
+}
+
 dicomUrl=document.getElementById("dicomUrl").value;
 drawImageDicom()
 }
@@ -1025,7 +1004,8 @@ controller.on('frame', function(frame) {
 });
 
 // Connect the controller to start receiving data
- 
+//controller.connect();
+
 document.getElementById("enableDrawing").addEventListener("click", enableDrawing);
 document.getElementById("disableDrawing").addEventListener("click", disableDrawing);
 document.getElementById("fullscreen").addEventListener("click", fullscreen);
@@ -1057,32 +1037,84 @@ function fullscreen(){
              el.mozRequestFullScreen();
           }            
 }
+var  videoZoomIn = document.getElementById('board');
 
 function videoZoomIn(){
- var el = document.getElementById('board');
+var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
 
-                               el.width=1100;
+  // console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*10;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth+percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
       
 }
 function videoZoomOut(){
-                       var el = document.getElementById('board');
+var colabEleStyle = videoZoomIn;
+// console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
 
-                               el.width=100;
+   //console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*10;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth-percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
       
 }
-
+var dicomeZoomInImage;
 function dicomZoomIn(){
+
+
+ var colabEleStyle = dicomeZoomInImage;
+// console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+  // console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*2;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth+percentColabwidth;
+     //  console.log("parsed %added "+colabEleWidth);
+var zoomInWidth= colabEleWidth.toString();
+dicomeZoomInImage.width=zoomInWidth;
+      // console.log("parsed tostring "+zoomInWidth);
+
+ var colabEleHeight = parseFloat(colabEleStyle.height);
+  //colabEleHeight=colabEleHeight+100;
+
+  // console.log("parsed height "+colabEleHeight);
+
+
+ var  percentColabHeight=(colabEleHeight /100)*2;
+        colabEleHeight=colabEleHeight+percentColabHeight;
+
+ var zoomInHeight= colabEleHeight.toString();
+   dicomeZoomInImage.height=zoomInHeight;
+      // console.log("parsed tostring height "+zoomInHeight);
+
+  
+
 
       var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
      ctximg.clearRect(0,0,1400,1000);
 
     img.onload = function(){
-      var height = img.height+300;
-  var width = img.width+300;
- // alert("width"+width);
-
-        ctximg.drawImage(img, 0, 0, width, height);
+ 
+        ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
     img.src = dicomUrl;
     
@@ -1092,24 +1124,50 @@ function dicomZoomIn(){
 function dicomZoomOut(){
 
 
-      
-     var ctximg = $("#dicom")[0].getContext("2d"),
+ var colabEleStyle = dicomeZoomInImage;
+// console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+  // console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*2;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth-percentColabwidth;
+     //  console.log("parsed %added "+colabEleWidth);
+var zoomInWidth= colabEleWidth.toString();
+dicomeZoomInImage.width=zoomInWidth;
+       //console.log("parsed tostring "+zoomInWidth);
+
+ var colabEleHeight = parseFloat(colabEleStyle.height);
+  //colabEleHeight=colabEleHeight+100;
+
+   ////console.log("parsed height "+colabEleHeight);
+
+
+ var  percentColabHeight=(colabEleHeight /100)*2;
+        colabEleHeight=colabEleHeight-percentColabHeight;
+
+ var zoomInHeight= colabEleHeight.toString();
+   dicomeZoomInImage.height=zoomInHeight;
+      // console.log("parsed tostring height "+zoomInHeight);
+
+  
+
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
-    
- ctximg.clearRect(0,0,1400,1000);
+     ctximg.clearRect(0,0,1400,1000);
 
     img.onload = function(){
-      var height = img.height-300;
-  var width = img.width-300;
  
-        ctximg.drawImage(img, 0, 0, width, height);
+        ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
     img.src = dicomUrl;
- 
+    
          
 }
-
-
  </script>
 
 
