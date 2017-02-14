@@ -1028,14 +1028,20 @@ function disableDrawing() {
  }
 
 function fullscreen(){
-           var el = document.getElementById('board');
- 
-           if(el.webkitRequestFullScreen) {
-               el.webkitRequestFullScreen();
-           }
-          else {
-             el.mozRequestFullScreen();
-          }            
+            var colabEleStyle = videoZoomIn;
+ console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+   console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=1200;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth+percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
 }
 var  videoZoomIn = document.getElementById('board');
 
