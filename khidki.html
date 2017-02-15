@@ -254,7 +254,7 @@ function closeNav() {
     box-sizing: border-box;">
  <i style="margin: 5px" class="material-icons">zoom_out</i>
 </div>
-<div style="  width: 35px; margin-left: 5px; margin-top: 2px;
+<div style=" display: none; width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
@@ -1073,6 +1073,14 @@ function disableDrawing() {
 ////for remote
 function cancelfullscreenRemote(){
     //   console.log("agaun remote min");
+     var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
 
     var dicom=document.getElementById("dicom").style.zIndex = "1";
 dicomFullScreen();
@@ -1108,6 +1116,14 @@ videoZoomIn.width=zoomInWidth;
 
 //////////
 function cancelfullscreen(){
+     var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
      //  console.log("agaun min");
      //  console.log("dicome full screen old "+dicomUrl);
 
@@ -1153,6 +1169,14 @@ var videoScreenData = {
 }
 
 function fullscreenRemote(){
+     var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
  //  console.log("agaun remt max");
  //  console.log("dicome full screen old "+dicomUrl);
 
@@ -1198,6 +1222,14 @@ videoZoomIn.width=zoomInWidth;
 
 function fullscreen(){
    //console.log("agaun max");
+ var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
 
 ///////////make the dicome small
 var dicom=document.getElementById("dicom").style.zIndex = "2";
