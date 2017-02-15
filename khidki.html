@@ -220,7 +220,7 @@ function closeNav() {
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i id="enableDrawing" style="margin: 5px" class="material-icons">create</i>
+ <i id="enableDrawing" style=" background-color: #aaaaaa; margin: 5px" class="material-icons">create</i>
 </div>
 <div style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
@@ -229,49 +229,52 @@ function closeNav() {
  <i id="disableDrawing" style="margin: 5px" class="material-icons">close</i>
 </div>
 
-<div  style=" width: 35px; margin-left: 5px; margin-top: 2px;
+
+<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">color_lens</i>
+ <i id="fullscreen" style=" background-color:  #c7a197; margin: 5px" class="material-icons">launch</i>
 </div>
 <div style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
- <i id="fullscreen" style="margin: 5px" class="material-icons">launch</i>
+ <i id="cancelfullscreen" style=" background-color:  #c7a197; margin: 5px" class="material-icons">close</i>
 </div>
-<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
-    height: 35px;
-    border: 1px solid Black;
-    box-sizing: border-box;">
- <i id="cancelfullscreen" style="margin: 5px" class="material-icons">close</i>
-</div>
-<div id="dicom-zoom-in" style=" width: 35px; margin-left: 5px; margin-top: 2px;
+<div id="video-zoom-in" style=" background-color:  #c7a197; width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
  <i style="margin: 5px" class="material-icons">zoom_in</i>
 </div>
-<div id="dicom-zoom-out" style=" width: 35px; margin-left: 5px; margin-top: 2px;
+<div id="video-zoom-out" style=" background-color:  #c7a197; width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_out</i>
+</div>
+<div style="  width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i id="fullscreenDicom" style="  background-color: #94b4b4; margin: 5px" class="material-icons">launch</i>
+</div>
+
+<div id="dicom-zoom-in" style="  background-color: #94b4b4; width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_in</i>
+</div>
+<div id="dicom-zoom-out" style="  background-color: #94b4b4; width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
     box-sizing: border-box;">
  <i style="margin: 5px" class="material-icons">zoom_out</i>
 </div>
 
-<div id="video-zoom-in" style=" width: 35px; margin-left: 5px; margin-top: 2px;
-    height: 35px;
-    border: 1px solid Black;
-    box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">zoom_in</i>
-</div>
-<div id="video-zoom-out" style=" width: 35px; margin-left: 5px; margin-top: 2px;
-    height: 35px;
-    border: 1px solid Black;
-    box-sizing: border-box;">
- <i style="margin: 5px" class="material-icons">zoom_out</i>
-</div>
+
 
     </div>
 
@@ -280,7 +283,8 @@ function closeNav() {
 
   
 
-   <div id="canvasesdiv" style="position:relative; width:1400px; height:700px">
+   <div id="canvasesdiv"    
+ style="position:relative; width:100%; height:700px;  background-color: #e7e7e7;">
 <canvas id="dicom"
 style="z-index: 1;
 position:absolute;
@@ -392,8 +396,7 @@ document.getElementById('open-room').onclick = function() {
 
 
     connection.extra = {
-  userid: document.getElementById('user-id').value,
-  dicomUrl: document.getElementById('dicomUrl').value
+  userid: document.getElementById('user-id').value
 
   //only open room user is the admin and he can set the dicom url
 };
@@ -698,7 +701,7 @@ drawImageDicom();
 var handEvent;
 
  
-
+var videoSizeFlag=false;
 connection.onmessage = function(event) {
 
     var urlPacket=JSON.parse(event.data);
@@ -710,6 +713,34 @@ if(urlPacket.url){
                  dicomUrl=urlPacket.url;
                 drawImageDicom();
 }
+}
+///dicome size data respnce
+
+if(urlPacket.maxDicom){
+   
+
+                dicomFullScreenRemote();
+                urlPacket.maxDicom=false;
+
+  // console.log("agaun-onmsg maxDicom");
+}
+ 
+
+
+//videoscreen size data response
+if(urlPacket.max){
+   
+
+                fullscreenRemote();
+                urlPacket.max=false;
+
+ }
+if(urlPacket.min){
+   
+
+                cancelfullscreenRemote();
+                urlPacket.min=false;
+ 
 }
 
 
@@ -742,7 +773,7 @@ var canvasclient = document.getElementById("leap-client");
   // create a rendering context
   var ctxcl = canvasclient.getContext("2d");
   ctxcl.translate(canvasclient.width/2,canvasclient.height);
-  ctxcl.fillStyle = "#FF0000";
+  ctxcl.fillStyle = "#7b63b8";
 
 
       ctxcl.beginPath();
@@ -833,9 +864,10 @@ var handData = {
 
   
   // listen to Leap Motion
- // Leap.loop(draw);
+  //Leap.loop(draw);
 var dicomUrl="";
 function drawImageDicom(){
+    if (dicomUrl) {
     var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
     
@@ -850,7 +882,7 @@ function drawImageDicom(){
      };
     img.src = dicomUrl;
  }
- 
+ }
 
 function setDicomUrl() {
 
@@ -864,10 +896,11 @@ connection.send(JSON.stringify(urlData));
 }
 
 dicomUrl=document.getElementById("dicomUrl").value;
+dicomUrlExtra=dicomUrl;
 drawImageDicom()
 }
 
-
+var dicomUrlExtra;
 
 
 //draw
@@ -1024,9 +1057,11 @@ document.getElementById("dicom-zoom-out").addEventListener("click", dicomZoomOut
 document.getElementById("video-zoom-in").addEventListener("click", videoZoomIn);
 
 document.getElementById("video-zoom-out").addEventListener("click", videoZoomOut);
+document.getElementById("fullscreenDicom").addEventListener("click", dicomFullScreen);
 
+ 
 
-
+ 
 function enableDrawing() {
     drawFlag=true;
  }
@@ -1035,8 +1070,14 @@ function disableDrawing() {
     drawFlag=false;
  }
 
+////for remote
+function cancelfullscreenRemote(){
+    //   console.log("agaun remote min");
 
-function cancelfullscreen(){
+    var dicom=document.getElementById("dicom").style.zIndex = "1";
+dicomFullScreen();
+    var board=document.getElementById("board").style.zIndex = "2";
+
          //  var el = document.getElementById('board');
  /*
            if(el.webkitRequestFullScreen) {
@@ -1061,10 +1102,69 @@ function cancelfullscreen(){
 videoZoomIn.width=zoomInWidth;
 
 
+ 
 
 }
 
-function fullscreen(){
+//////////
+function cancelfullscreen(){
+     //  console.log("agaun min");
+     //  console.log("dicome full screen old "+dicomUrl);
+
+   // console.log("dicome full screen old "+dicomUrlExtra);
+
+    var dicom=document.getElementById("dicom").style.zIndex = "1";
+dicomFullScreen();
+    var board=document.getElementById("board").style.zIndex = "2";
+
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+   //console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=250;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+
+///send msg to client
+var videoScreenData = {
+  "id":"fullscreen",
+  "min": true
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+ connection.send(JSON.stringify(videoScreenData));
+
+
+}
+
+function fullscreenRemote(){
+ //  console.log("agaun remt max");
+ //  console.log("dicome full screen old "+dicomUrl);
+
+  //  console.log("dicome full screen old "+dicomUrlExtra);
+
+///////////make the dicome small
+var dicom=document.getElementById("dicom").style.zIndex = "2";
+dicomSmallScreen();
+    var board=document.getElementById("board").style.zIndex = "1";
+
+
+    /////////////////////////////////////////////
          //  var el = document.getElementById('board');
  /*
            if(el.webkitRequestFullScreen) {
@@ -1087,6 +1187,60 @@ function fullscreen(){
        colabEleWidth=percentColabwidth;
   var zoomInWidth= colabEleWidth.toString();
 videoZoomIn.width=zoomInWidth;
+
+ 
+//////
+
+
+
+
+}
+
+function fullscreen(){
+   //console.log("agaun max");
+
+///////////make the dicome small
+var dicom=document.getElementById("dicom").style.zIndex = "2";
+dicomSmallScreen();
+    var board=document.getElementById("board").style.zIndex = "1";
+
+
+    /////////////////////////////////////////////
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+//   console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=1200;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+///send msg to client
+var videoScreenData = {
+  "id":"fullscreen",
+  "max": true
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+ connection.send(JSON.stringify(videoScreenData));
+
+
+
+//////
+
 
 
 
@@ -1127,6 +1281,483 @@ videoZoomIn.width=zoomInWidth;
       
 }
 var dicomeZoomInImage;
+
+ 
+
+function dicomFullScreen(){
+   /// console.log("dicome full screen old "+dicomUrl);
+
+   // console.log("dicome full screen old "+dicomUrlExtra);
+
+
+                    var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+  var colabEleHeight= parseFloat(colabEleStyle.height);
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+   //    console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+            // console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+           //  console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+            // console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+            // console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+  //   console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrlExtra;
+  ///
+  ///send msg to client
+var dicomScreenData = {
+  "id":"fullscreen",
+  "maxDicom": true
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+ connection.send(JSON.stringify(dicomScreenData));
+
+
+
+//////  
+
+    
+         
+}
+
+
+
+
+
+///////////////
+function dicomFullScreenRemote(){
+
+                    var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+  var colabEleHeight= parseFloat(colabEleStyle.height);
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+    //   console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+         //    console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+          //   console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+            // console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+            // console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+   //  console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+
+    
+         
+}
+
+
+
+
+////
+
+function dicomSmallScreen(){
+
+                    //var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = 250;
+  var colabEleHeight= 250;
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+      // console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+         //    console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+          //   console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+           //  console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+           //  console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+   //  console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+////
+
+ 
+
+    
+         
+}
+
+
+
+
+
+
+
+//////
+function dicomSmallScreenRemote(){
+
+                    //var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = 250;
+  var colabEleHeight= 250;
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+      // console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+           //  console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+           //  console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+          //   console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+            // console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+   //  console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+////
+ 
+
+    
+         
+}
+
+
+
+
+
+
+
+
+///
+
 function dicomZoomIn(){
 
 
