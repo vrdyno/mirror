@@ -1,3 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>KHIDKI</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="//js.leapmotion.com/0.2.0-beta1/leap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="//js.leapmotion.com/0.2.0-beta1/leap.min.js"></script>
+
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Add a gray background color and some padding to the footer */
+    footer {
+
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+ 
+ .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    text-align:center;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+
+}
+p {
+    font-family: "Times New Roman", Times, serif;
+        font-weight: bold;
+
+}
+
+.sidenav a:hover{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.buttonCall {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+  .button2 {background-color: #008CBA;} /* Blue */
+
+  .button5 {background-color: #555555;} /* Black */
+  .buttonsmall {font-size: 10px;}
+
+.center {
+    margin: auto;
+    width: 80%;
+     padding: 20px;
+}
+
+  </style>
+</head>
+<body style="background-color: #DCD8CF">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" style="    font-size: 20px;" href="#">KHIDKI</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+    
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li> <button id="join-room"  class="btn btn-primary btn-lg" style=" margin-right : 2px; margin-top: 6px;"  >Join Room</button></li>
+ 
+<li><button id="open-room"    class="btn btn-success btn-lg" style="margin-left : 2px;  margin-top: 6px;"  >Open Room</button></li>
+ <li>  <label class="navbar-brand"  for="room-id">   </label> </li>
+<li><input  style="  border: none; margin-top: 2px; 
+     padding: 2px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+     margin: 4px 2px;"  class="navbar-brand"  type="text" id="user-id" value=""  placeholder="Enter User Id"></li>
+<li> 
+<div style="position:fixed; z-index: 50;"  id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+<a  >Set Dicom Image</a>
+Dicom Url: <input type="url" id="dicomUrl" value="" placeholder="paste dicom link"><button onclick="setDicomUrl()">Set URL</button>
+
+
+
+      <a  >Select a Webcam</a>
+            </p>         
+            <select id="video-devices"></select>
+            <select id="audio-devices" ></select>
+            <br />
+            <br />
+      <button id="switch-camera" >Accept Webcam</button>
+      <button id="switch-microphone"  >Accept Mic</button>   
+</div>
+
+
+<span style="font-size:30px;cursor:pointer" onclick="openNav()"> <p class="navbar-brand" style=" margin-top: 6px;   font-size: 40px;" >&#9776;</p></span></li></ul>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+ 
+
+<style>
+  html, body { width: 100%; height: 100%; margin: 0; padding: 0}
+ 
+</style>
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "100%";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+            
+  <div id="videos-container" style="height: 480; width: 640;" ></div>
+<div  style=" display:none; id="chat-container">
+    <input type="text" id="input-text-chat" placeholder="..." disabled>
+    <button id="share-file" disabled>...</button>
+    <br>
+
+
+
+    <div id="file-container"></div>
+    <div class="chat-output"></div>
+</div>
+
+
+
+
+<script src="js/FileBufferReader.js"></script>
+
+<!-- socket.io for signaling -->
+<script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+
+ 
+
+
+
+
+ 
+
+
+  <div class="row" style="margin-top: 6px;">
+  
+    <div class="col-sm-11">
+
+    <div  style=" height: 800; background-color: #C9C9C9">
+     
+    <div class="row" >
+    <div class="col-sm-1">
+<div style=" width: 35px; margin-left: 5px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i id="enableDrawing" style=" background-color: #aaaaaa; margin: 5px" class="material-icons">create</i>
+</div>
+<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i id="disableDrawing" style="margin: 5px" class="material-icons">close</i>
+</div>
+
+
+<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i id="fullscreen" style=" background-color:  #c7a197; margin: 5px" class="material-icons">launch</i>
+</div>
+<div style=" width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i id="cancelfullscreen" style=" background-color:  #c7a197; margin: 5px" class="material-icons">close</i>
+</div>
+<div id="video-zoom-in" style=" background-color:  #c7a197; width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_in</i>
+</div>
+<div id="video-zoom-out" style=" background-color:  #c7a197; width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_out</i>
+</div>
+<div style=" display: none; width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i id="fullscreenDicom" style=" display: none; background-color: #94b4b4; margin: 5px" class="material-icons">launch</i>
+</div>
+
+<div id="dicom-zoom-in" style="  background-color: #94b4b4; width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_in</i>
+</div>
+<div id="dicom-zoom-out" style="  background-color: #94b4b4; width: 35px; margin-left: 5px; margin-top: 2px;
+    height: 35px;
+    border: 1px solid Black;
+    box-sizing: border-box;">
+ <i style="margin: 5px" class="material-icons">zoom_out</i>
+</div>
+
+
+
+    </div>
+
+<div id="colab-div" class="col-sm-10" style="overflow: hidden; ">
+
+
+  
+
+   <div id="canvasesdiv"    
+ style="position:relative; width:100%; height:700px;  background-color: #e7e7e7;">
+<canvas id="dicom"
+style="z-index: 1;
+position:absolute;
+left:0px;
+top:0px;
+" width=1400px; height=700px; >
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<video  
+style="z-index: 2;
+position:absolute;
+left:0px;
+top:0px;
+" id="board" width="250px"  >
+  
+</video>
+
+<canvas id="drawing-surface"
+style="z-index: 3;
+position:absolute;
+left:0px;
+top:0px;
+" height="900px" width="1600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<canvas id="remote-drawing-surface"
+style="z-index: 4;
+position:absolute;
+left:0px;
+top:0px;
+" height="900px" width="1600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<canvas id="leap-client"
+style="z-index: 5;
+position:absolute;
+left:0px;
+top:0px;
+" height="900px" width="1600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<canvas id="leap-overlay"
+style="z-index: 6;
+position:absolute;
+left:0px;
+top:0px;
+" height="900px" width="1600px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+
+</div>
+
+ 
+</div>
+
+</div>
+
+</div>
+    </div>
+  
+    <div id="parent-peers-view" class="col-sm-1"  >
+<div id="peers-view" style="     overflow: hidden;
+ background-color:#9AD3DE;    margin-right: 10px;  height: 970px;">
+    
+     
+            </div>
+            </div>
+            </div>
+
+</div>
+
+   <label for="room-id"  style=" display:none; ">Room Id </label>
+<input type="text" id="room-id" value="wanClouds" style="display: none"></br>
+
+ 
+<button id="open-or-join-room"  style=" display:none;">Auto Open Or Join Room</button>
+
+
+           
+     
+ 
+
+<footer  style=" margin-top: 6cm;"  
+ class="container-fluid text-center">
+ 
+ 
+  <p>Made by WanClouds
+</p>
+ 
+</footer>
+
+</body>
+</html>
+
+
+<script src="js/RTCMultiConnection.js"></script>
+
+<script type="text/javascript">
+var flagopen = false; //bool
+
+    
+
+    // ......................................................
+// .......................UI Code........................
+// ......................................................
+document.getElementById('open-room').onclick = function() {
+    this.disabled = true;
+    document.getElementById("join-room").disabled = true;
+
+
+    connection.extra = {
+  userid: document.getElementById('user-id').value
+
+  //only open room user is the admin and he can set the dicom url
+};
+    connection.open(document.getElementById('room-id').value);
+
+
+};
+document.getElementById('join-room').onclick = function() {
+    this.disabled = true;
+    document.getElementById("open-room").disabled = true;
+
+        connection.extra = {
+  userid: document.getElementById('user-id').value
+};
+    connection.join(document.getElementById('room-id').value);
+};
+document.getElementById('open-or-join-room').onclick = function() {
+    this.disabled = true;
+    connection.openOrJoin(document.getElementById('room-id').value);
+};
+// ......................................................
+// ................FileSharing/TextChat Code.............
+// ......................................................
+document.getElementById('share-file').onclick = function() {
+    var fileSelector = new FileSelector();
+    fileSelector.selectSingleFile(function(file) {
+        connection.send(file);
+    });
+};
+document.getElementById('input-text-chat').onkeyup = function(e) {
+    if(e.keyCode != 13) return;
+    
+    // removing trailing/leading whitespace
+    this.value = this.value.replace(/^\s+|\s+$/g, '');
+    if (!this.value.length) return;
+    
+    connection.send(this.value);
+    appendDIV(this.value);
+    this.value =  '';
+};
+        var videosContainer = document.getElementById('videos-container') || document.body;
+var chatContainer = document.querySelector('.chat-output');
+function appendDIV(event) {
+    var div = document.createElement('div');
+    div.innerHTML = event.data || event;
+    chatContainer.insertBefore(div, chatContainer.firstChild);
+    div.tabIndex = 0; div.focus();
+    
+    document.getElementById('input-text-chat').focus();
+}
+// ......................................................
+// ..................RTCMultiConnection Code.............
+// ......................................................
+
+var connection = new RTCMultiConnection();
+connection.extra = {
+  userid: document.getElementById('user-id').value
+};
+
+/////selelct camera code///
+
+  var videoDevices = document.getElementById('video-devices');
+            var audioDevices = document.getElementById('audio-devices');
+
+            connection.DetectRTC.load(function() {
+                connection.DetectRTC.MediaDevices.forEach(function(device) {
+                    if(document.getElementById(device.id)) {
+                        return;
+                    }
+
+                    if(device.kind === 'audioinput') {
+                        var option = document.createElement('option');
+                        option.id = device.id;
+                        option.innerHTML = device.label || device.id;
+                        option.value = device.id;
+                        audioDevices.appendChild(option);
+
+                        if(connection.mediaConstraints.audio.optional.length && connection.mediaConstraints.audio.optional[0].sourceId === device.id) {
+                            option.selected = true;
+                        }
+                    }
+
+                    if(device.kind.indexOf('video') !== -1) {
+                        var option = document.createElement('option');
+                        option.id = device.id;
+                        option.innerHTML = device.label || device.id;
+                        option.value = device.id;
+                        videoDevices.appendChild(option);
+
+                        if(connection.mediaConstraints.video.optional.length && connection.mediaConstraints.video.optional[0].sourceId === device.id) {
+                            option.selected = true;
+                        }
+                    }
+                });
+            });
+
+            document.getElementById('switch-camera').onclick = function() {
+                var videoSourceId = videoDevices.value;
+
+                if(connection.mediaConstraints.video.optional.length && connection.attachStreams.length) {
+                    if(connection.mediaConstraints.video.optional[0].sourceId === videoSourceId) {
+                        alert('Selected video device is already selected.');
+                        return;
+                    }
+                }
+
+                connection.attachStreams.forEach(function(stream) {
+                    stream.getVideoTracks().forEach(function(track) {
+                        stream.removeTrack(track);
+
+                        if(track.stop) {
+                            track.stop();
+                        }
+                    });
+                });
+
+                connection.mediaConstraints.video.optional = [{
+                    sourceId: videoSourceId
+                }];
+
+            };
+
+            document.getElementById('switch-microphone').onclick = function() {
+                var audioSourceId = audioDevices.value;
+
+                if(connection.mediaConstraints.audio.optional.length && connection.attachStreams.length) {
+                    if(connection.mediaConstraints.audio.optional[0].sourceId === audioSourceId) {
+                        alert('Selected audio device is already selected.');
+                        return;
+                    }
+                }
+
+                connection.attachStreams.forEach(function(stream) {
+                    stream.getAudioTracks().forEach(function(track) {
+                        stream.removeTrack(track);
+
+                        if(track.stop) {
+                            track.stop();
+                        }
+                    });
+                });
+
+                connection.mediaConstraints.audio.optional = [{
+                    sourceId: videoSourceId
+                }];
+
+                connection.captureUserMedia();
+            };
+
+
+///select camera////
+var localVideo = document.getElementById('board');  //this is the remote stream handler
+//var divpeer = document.getElementById('peers-view');
+//console.log(divpeer.style.width);
+//console.log ( '#someButton was clicked' );
+
+connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+connection.enableFileSharing = true; // by default, it is "false".
+connection.session = {
+    audio: true,
+    video: true,
+    data : true
+};
+connection.sdpConstraints.mandatory = {
+    OfferToReceiveAudio: true,
+    OfferToReceiveVideo: true
+};
+
+/* 
+connection.bandwidth = {
+    audio: 50,
+    video: 256,
+    data: 3638400,
+    screen: 300      // 300kbps
+};
+*/
+ connection.onstream = function(e) {
+   // if (e.type == 'local') {
+var vid = document.createElement("video");  
+if(e.extra.userid=="doctor"){
+            localVideo.muted = true;
+
+//flexible gui code
+
+
+                   // var colabEleStyle = window.getComputedStyle(document.getElementById("colab-div"));
+ //console.log(colabEleStyle.width);
+ //var colabEleWidth = parseFloat(colabEleStyle.width);
+  
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+//percentColabwidth.toString();
+  // vid.width = percentwidth;
+//localVideo.width=percentColabwidth.toString();
+ //vid.style.margin= percentmargin.toString()+"px";
+// console.log(percentColabwidth.toString());
+
+//localVideo.width=percentColabwidth.toString();
+
+////flexible gui code
+
+
+
+          attachMediaStream(localVideo, e.stream);
+localVideo.play();
+
+
+}
+else{
+vid.id=e.extra.userid;
+    //all flexible gui code
+                    var eleStyle = window.getComputedStyle(document.getElementById("peers-view"));
+var eleWidth = parseFloat(eleStyle.width);
+  
+  var percentwidth=(eleWidth/100)*90;
+       var percentmargin=(percentwidth/100)*5;
+
+   percentwidth.toString();
+   vid.width = percentwidth;
+
+ vid.style.margin= percentmargin.toString()+"px";
+ //console.log(percentmargin.toString()+"px");
+
+ vid.controls =true;
+        vid.muted = true;
+
+         attachMediaStream(vid, e.stream);
+
+ 
+    //all flexible gui code
+
+ 
+  document.getElementById("peers-view").appendChild(vid); 
+                    vid.play();
+
+
+
+   //localVideo.play(); 
+
+      //  console.log(e.extra.userid);
+    
+      //  localVideo.style.opacity = 1;
+
+    
+ //}
+  }
+  //set url and display in canvas
+  dicomUrl= e.extra.dicomUrl;
+
+};
+
+ 
+///////////////////////collabration////////////////
+
+
+
+ 
+
+///////////////////////////collabration//////////////////////
+
+
+
+
+   attachMediaStream = function(element, stream) {
+        if (typeof element.srcObject !== 'undefined') {
+            element.srcObject = stream;
+        } else if (typeof element.mozSrcObject !== 'undefined') {
+            element.mozSrcObject = stream;
+        } else if (typeof element.src !== 'undefined') {
+            element.src = URL.createObjectURL(stream);
+        } else {
+            console.log('Error attaching stream to element.');
+        }
+
+ 
+    };
+
+//connection.onmessage = appendDIV;
+connection.filesContainer = document.getElementById('file-container');
+connection.onopen = function() {
+flagopen=true;
+drawImageDicom();
+//alert(connection.getAllParticipants().length);
+  // setInterval(function() {
+       //   console.log("msg send") ;
+
+        //    connection.send('collab test'+document.getElementById('user-id').value);
+        //}, 5000);
+
+
+
+    document.getElementById('share-file').disabled      = false;
+    document.getElementById('input-text-chat').disabled = false;
+};
+
+
+
+////
+
+
+////
+var handEvent;
+
+ 
+var videoSizeFlag=false;
 connection.onmessage = function(event) {
 
     var urlPacket=JSON.parse(event.data);
@@ -54,7 +758,7 @@ handEvent=event;
         var remotepacket=JSON.parse(handEvent.data);
 
 
-    if (remotepacket.id=="drawing") {
+    if(remotepacket.id=="drawing") {
         var posdraw= [ ];
 posdraw[0]=remotepacket.position.x;
 posdraw[1]=remotepacket.position.y;
@@ -62,7 +766,7 @@ posdraw[1]=remotepacket.position.y;
         drawRemoteCircle(posdraw);
 
       }
-      else{
+    else{
 
            drawFullHand(Packet);
 
@@ -70,3 +774,1187 @@ posdraw[1]=remotepacket.position.y;
 }
 }
  };
+
+ 
+</script>
+
+
+<script>
+  var canvas = document.getElementById("leap-overlay");
+  
+  // fullscreen
+canvas.width = 1600;
+canvas.height = 900;
+  
+  // create a rendering context
+  var ctx = canvas.getContext("2d");
+  ctx.translate(canvas.width/2,canvas.height);
+  ctx.fillStyle = "rgba(0,2,3,0.7)";
+  var position
+  // render each frame
+
+  function drawFullHand(obj) {
+    var frame= obj;
+    // clear last frame
+  //  console.log("inside draw # "+obj.hands.length);
+    if (drawFlag==false) {
+    ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
+  
+    // render circles based on pointable positions
+    var pointablesMap = obj.pointables;
+
+///////////////
+if(obj.hands.length > 0)
+    {
+        var hand = frame.hands[0];
+        var positionH = hand.palmPosition;
+ var pos = positionH
+      position=pos;
+//pos[0]=pos[0]*1.2;
+//pos[1]=pos[0]*1.2;
+
+
+      // create a circle for each pointable
+      var radius = 20
+      //Math.min(600/Math.abs(pos[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+
+      var handx=pos[0]-radius/2;
+      var handy=-pos[1]-radius/2;
+      ctx.fill();
+}
+
+////////////
+
+
+    for (var i in pointablesMap) {
+      // get the pointable's position
+      var pointable = pointablesMap[i];
+      var pos = pointable.tipPosition;
+      position=pos;
+
+
+      // create a circle for each pointable
+      var radius = 10
+      //Math.min(600/Math.abs(pos[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+            ctx.fill();
+
+      var finx=pos[0]-radius/2;
+      var finy=-pos[1]-radius/2;
+      //draw line from palm to finger
+   ctx.beginPath();
+      ctx.moveTo(finx, finy);
+      ctx.lineTo(handx, handy);
+      ctx.stroke();
+      ///////
+/*
+        if(flagopen){
+
+var handData = {
+  "id":"",
+  "position": {
+    "x":0 ,
+    "y": 0 ,
+    "z":0
+  }
+}
+            
+            handData.id="hand";
+            handData.position.x=pos[0];
+            handData.position.y=pos[1];
+            handData.position.z=pos[2];
+
+            connection.send(JSON.stringify(handData));
+
+       }
+*/
+
+    }}
+  };
+
+ // setInterv
+  function draw(obj) {
+    // clear last frame
+    if (drawFlag==false) {
+    ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
+  
+    // render circles based on pointable positions
+    var pointablesMap = obj.pointablesMap;
+    for (var i in pointablesMap) {
+      // get the pointable's position
+      var pointable = pointablesMap[i];
+      var pos = pointable.tipPosition;
+      position=pos;
+
+
+      // create a circle for each pointable
+      var radius = 70
+      //Math.min(600/Math.abs(pos[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+      ctx.fill();
+        if(flagopen){
+
+var handData = {
+  "id":"",
+  "position": {
+    "x":0 ,
+    "y": 0 ,
+    "z":0
+  }
+}
+            
+            handData.id="hand";
+            handData.position.x=pos[0];
+            handData.position.y=pos[1];
+            handData.position.z=pos[2];
+
+            connection.send(JSON.stringify(handData));
+
+       }
+    }}
+  };
+
+ // setInterval(function() {
+       //   console.log("msg send") ;
+     
+
+        //    connection.send('collab test'+document.getElementById('user-id').value);
+  //    }, 0.001);
+
+  
+  // listen to Leap Motion
+  //Leap.loop(draw);
+var dicomUrl="";
+function drawImageDicom(){
+    if (dicomUrl) {
+    var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+    
+         ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+      var height = img.height;
+  var width = img.width;
+   dicomeZoomInImage=img;
+
+        ctximg.drawImage(img, 0, 0, width, height);
+     };
+    img.src = dicomUrl;
+ }
+ }
+
+function setDicomUrl() {
+
+var urlData = {
+  "id":"url",
+  "url": document.getElementById('dicomUrl').value
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+if(document.getElementById('dicomUrl').value != ""){
+connection.send(JSON.stringify(urlData));
+}
+
+dicomUrl=document.getElementById("dicomUrl").value;
+dicomUrlExtra=dicomUrl;
+drawImageDicom()
+}
+
+var dicomUrlExtra;
+
+
+//draw
+
+var drawFlag=false;
+var Drawing = document.getElementById('drawing-surface');
+var ctxDrawing = Drawing.getContext('2d');
+var remoteDrawing = document.getElementById('remote-drawing-surface');
+var ctxRemoteDrawing = remoteDrawing.getContext('2d');
+// Get the canvasDrawing width and height
+var width = Drawing.width, height = Drawing.height;
+// Name some colors
+var red = '#F00', green = '#0F0', blue = '#00F', purple = '#A0F';
+// Create an array to save circle properties
+var circles = [ ];
+
+// Draw a circle with the given parameters:
+//   center: float array [x, y]
+//   radius: float > 0
+//   color: string "#RGB"
+//   fill: boolean
+function drawCircle(center, radius, color, fill) {
+
+    //send drawing to peer\\
+ if(drawFlag){
+    var drawingData = {
+  "id":"",
+  "position": {
+    "x":0 ,
+    "y": 0 
+  }
+}
+            //
+            drawingData.id="drawing";
+            drawingData.position.x=center[0];
+            drawingData.position.y=center[1];
+       
+                connection.send(JSON.stringify(drawingData));
+
+                //
+
+radius=5;
+  // Make an closed arc with a complete rotation
+ 
+  ctxDrawing.beginPath();
+  ctxDrawing.arc(center[0], center[1], radius, 0, 2*Math.PI);
+  ctxDrawing.closePath();
+  ctxDrawing.lineWidth = 10;
+  // Choose whether to fill or outline the circle
+  //if (fill) {
+    ctxDrawing.fillStyle = color;
+    ctxDrawing.fill();
+ // } else {
+  //  ctxDrawing.strokeStyle = color;
+  //  ctxDrawing.stroke();
+ // }
+}}
+
+function drawRemoteCircle(center) {
+       
+radius=5;
+fill=true;
+color= purple;
+  // Make an closed arc with a complete rotation
+  
+  ctxRemoteDrawing.beginPath();
+  ctxRemoteDrawing.arc(center[0], center[1], radius, 0, 2*Math.PI);
+  ctxRemoteDrawing.closePath();
+ ctxRemoteDrawing.lineWidth = 10;
+  // Choose whether to fill or outline the circle
+  //if (fill) {
+    ctxRemoteDrawing.fillStyle = color;
+  ctxRemoteDrawing.fill();
+ // } else {
+  //  ctxDrawing.strokeStyle = color;
+  //  ctxDrawing.stroke();
+ // }
+}
+
+
+
+// Transform Leap coordinates to canvasDrawing scene coordinates
+function leapToScene(position) {
+  var x = position[0];
+  var y = position[1];
+  // Shift the Leap origin to the canvasDrawing's bottom center and invert the y-axis
+  return [width/2 + x, height - y];
+}
+
+// Create a Leap controller to access frame data
+var controller = new Leap.Controller();
+
+// Register a callback to process frame data
+controller.on('frame', function(frame) {
+  // Clear the canvasDrawing so we can repaint
+ // ctxDrawing.clearRect(0, 0, width, height);
+  
+  // Draw a green circle to test the canvasDrawing
+ // drawCircle([width/2, 50], 20, green);
+  
+  // Make sure we have accumulated at most 200 circles
+  if (circles.length > 200) {
+    circles = circles.slice(-200); // Last 200 circles
+  }
+  
+  // Redraw accumulated circles
+  for (var c = 0; c < circles.length; c = c+1) {
+    // Retrieve the circle properties
+    var center = circles[c].center;
+    var radius = circles[c].radius;
+    // Redraw the circle filled in purple
+   // drawCircle(center, radius, purple, true);
+  }
+  
+  // Draw finger tips as colored circles
+  for (var f = 0; f < frame.fingers.length; f = f+1) {
+    var finger = frame.fingers[f];
+    // Calculate the circle center and radius
+    var center = leapToScene(finger.tipPosition);
+    var radius = Math.abs(finger.touchDistance) * 1.5;
+    // Determine if the finger is touching or not
+    var touching = finger.touchZone == 'touching';
+    // Decide the circle color and whether to fill it
+    var color;
+    var fill;
+    if (touching) {
+      color = red;
+      fill = true;
+      // Save the circle properties to redraw it later
+      var circle = {center: center, radius: radius};
+      circles.push(circle);
+    }
+    else {
+      color = blue;
+      fill = false;
+    }
+    // Finally, draw the circle
+    drawCircle(center, radius, color, fill);
+  }
+});
+
+// Connect the controller to start receiving data
+//controller.connect();
+
+document.getElementById("enableDrawing").addEventListener("click", enableDrawing);
+document.getElementById("disableDrawing").addEventListener("click", disableDrawing);
+document.getElementById("fullscreen").addEventListener("click", fullscreen);
+document.getElementById("cancelfullscreen").addEventListener("click", cancelfullscreen);
+
+document.getElementById("dicom-zoom-in").addEventListener("click", dicomZoomIn);
+
+document.getElementById("dicom-zoom-out").addEventListener("click", dicomZoomOut);
+
+document.getElementById("video-zoom-in").addEventListener("click", videoZoomIn);
+
+document.getElementById("video-zoom-out").addEventListener("click", videoZoomOut);
+document.getElementById("fullscreenDicom").addEventListener("click", dicomFullScreen);
+
+ 
+
+ 
+function enableDrawing() {
+    drawFlag=true;
+ }
+ 
+function disableDrawing() {
+    drawFlag=false;
+ }
+
+////for remote
+function cancelfullscreenRemote(){
+    //   console.log("agaun remote min");
+     var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
+
+    var dicom=document.getElementById("dicom").style.zIndex = "1";
+dicomFullScreen();
+    var board=document.getElementById("board").style.zIndex = "2";
+
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+   //console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=250;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+
+ 
+
+}
+
+//////////
+function cancelfullscreen(){
+     var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
+     //  console.log("agaun min");
+     //  console.log("dicome full screen old "+dicomUrl);
+
+   // console.log("dicome full screen old "+dicomUrlExtra);
+
+    var dicom=document.getElementById("dicom").style.zIndex = "1";
+dicomFullScreen();
+    var board=document.getElementById("board").style.zIndex = "2";
+
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+   //console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=250;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+
+///send msg to client
+var videoScreenData = {
+  "id":"fullscreen",
+  "min": true
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+ connection.send(JSON.stringify(videoScreenData));
+
+
+}
+
+function fullscreenRemote(){
+     var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
+ //  console.log("agaun remt max");
+ //  console.log("dicome full screen old "+dicomUrl);
+
+  //  console.log("dicome full screen old "+dicomUrlExtra);
+
+///////////make the dicome small
+var dicom=document.getElementById("dicom").style.zIndex = "2";
+dicomSmallScreen();
+    var board=document.getElementById("board").style.zIndex = "1";
+
+
+    /////////////////////////////////////////////
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+//   console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=1200;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+ 
+//////
+
+
+
+
+}
+
+function fullscreen(){
+   //console.log("agaun max");
+ var drawingSurf=document.getElementById("drawing-surface")
+var ctxDrawsurf= drawingSurf.getContext('2d');
+      ctxDrawsurf.clearRect(0,0,1400,1000);
+
+var drawingSurfRemote=document.getElementById("remote-drawing-surface")
+var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
+      ctxDrawsurfR.clearRect(0,0,1400,1000);
+
+
+///////////make the dicome small
+var dicom=document.getElementById("dicom").style.zIndex = "2";
+dicomSmallScreen();
+    var board=document.getElementById("board").style.zIndex = "1";
+
+
+    /////////////////////////////////////////////
+         //  var el = document.getElementById('board');
+ /*
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }  
+          */ 
+    var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+//   console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=1200;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+///send msg to client
+var videoScreenData = {
+  "id":"fullscreen",
+  "max": true
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+ connection.send(JSON.stringify(videoScreenData));
+
+
+
+//////
+
+
+
+
+}
+var  videoZoomIn = document.getElementById('board');
+
+function videoZoomIn(){
+var colabEleStyle = videoZoomIn;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+  // console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*10;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth+percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+
+      
+}
+function videoZoomOut(){
+var colabEleStyle = videoZoomIn;
+// console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+ //  console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*10;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth-percentColabwidth;
+  var zoomInWidth= colabEleWidth.toString();
+videoZoomIn.width=zoomInWidth;
+      
+}
+var dicomeZoomInImage;
+
+ 
+
+function dicomFullScreen(){
+   /// console.log("dicome full screen old "+dicomUrl);
+
+   // console.log("dicome full screen old "+dicomUrlExtra);
+
+
+                    var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+  var colabEleHeight= parseFloat(colabEleStyle.height);
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+   //    console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+            // console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+           //  console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+            // console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+            // console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+  //   console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+  ///
+  ///send msg to client
+var dicomScreenData = {
+  "id":"fullscreen",
+  "maxDicom": true
+}
+//console.log("id"+urlData.id+"  url "+ urlData.url);
+ connection.send(JSON.stringify(dicomScreenData));
+
+
+
+//////  
+
+    
+         
+}
+
+
+
+
+
+///////////////
+function dicomFullScreenRemote(){
+
+                    var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+  var colabEleHeight= parseFloat(colabEleStyle.height);
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+    //   console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+         //    console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+          //   console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+            // console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+            // console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+   //  console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+
+    
+         
+}
+
+
+
+
+////
+
+function dicomSmallScreen(){
+
+                    //var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = 250;
+  var colabEleHeight= 250;
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+      // console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+         //    console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+          //   console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+           //  console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+           //  console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+   //  console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+////
+
+ 
+
+    
+         
+}
+
+
+
+
+
+
+
+//////
+function dicomSmallScreenRemote(){
+
+                    //var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = 250;
+  var colabEleHeight= 250;
+ 
+ // var percentColabwidth=(colabEleWidth /100)*70;
+ 
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+        var w=parseFloat(img.width);
+        var h=parseFloat(img.height);
+
+ if(w<colabEleWidth || h<colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+      // console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w<(colabEleWidth- perW)) {
+             w= w + perW;
+           //  console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h<(colabEleHeight- perH)) {
+             h= h + perH;
+           //  console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+
+ if(w>colabEleWidth || h>colabEleHeight){
+     //console.log(w+"  "+colabEleWidth);
+  var perW= w/100;
+  var perH= h/100;
+
+     //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
+       for (i = 0; i < 300; i++) {
+        if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
+            break;
+        }
+
+         if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
+            break;
+        }
+        
+        if (w>(colabEleWidth- perW)) {
+             w= w - perW;
+          //   console.log("width "+w);
+ 
+        }
+                   //  console.log("still counting");
+      
+        
+        if (h>(colabEleHeight- perH)) {
+             h= h - perH;
+            // console.log("height "+h);
+ 
+        }
+
+ }
+
+                ctximg.drawImage(img, 0, 0, w, h);
+                      return;
+
+
+ }
+
+  if(w<colabEleWidth){
+   //  console.log(w+"  "+colabEleWidth);
+
+
+ }
+        //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+////
+ 
+
+    
+         
+}
+
+
+
+
+
+
+
+
+///
+
+function dicomZoomIn(){
+
+
+ var colabEleStyle = dicomeZoomInImage;
+ //console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+ //  console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*2;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth+percentColabwidth;
+     //  console.log("parsed %added "+colabEleWidth);
+var zoomInWidth= colabEleWidth.toString();
+dicomeZoomInImage.width=zoomInWidth;
+     //  console.log("parsed tostring "+zoomInWidth);
+
+ var colabEleHeight = parseFloat(colabEleStyle.height);
+  //colabEleHeight=colabEleHeight+100;
+
+   //console.log("parsed height "+colabEleHeight);
+
+
+ var  percentColabHeight=(colabEleHeight /100)*2;
+        colabEleHeight=colabEleHeight+percentColabHeight;
+
+ var zoomInHeight= colabEleHeight.toString();
+   dicomeZoomInImage.height=zoomInHeight;
+      // console.log("parsed tostring height "+zoomInHeight);
+
+  
+
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+ 
+        ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+         
+}
+
+function dicomZoomOut(){
+
+
+ var colabEleStyle = dicomeZoomInImage;
+// console.log("no parsed"+colabEleStyle.width);
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+//  colabEleWidth=colabEleWidth+100;
+
+  // console.log("parsed "+colabEleWidth);
+
+
+  percentColabwidth=(colabEleWidth /100)*2;
+     // console.log("parsed %  "+percentColabwidth);
+       colabEleWidth=colabEleWidth-percentColabwidth;
+     //  console.log("parsed %added "+colabEleWidth);
+var zoomInWidth= colabEleWidth.toString();
+dicomeZoomInImage.width=zoomInWidth;
+       //console.log("parsed tostring "+zoomInWidth);
+
+ var colabEleHeight = parseFloat(colabEleStyle.height);
+  //colabEleHeight=colabEleHeight+100;
+
+   ////console.log("parsed height "+colabEleHeight);
+
+
+ var  percentColabHeight=(colabEleHeight /100)*2;
+        colabEleHeight=colabEleHeight-percentColabHeight;
+
+ var zoomInHeight= colabEleHeight.toString();
+   dicomeZoomInImage.height=zoomInHeight;
+      // console.log("parsed tostring height "+zoomInHeight);
+
+  
+
+
+      var ctximg = $("#dicom")[0].getContext("2d"),
+        img = new Image();
+     ctximg.clearRect(0,0,1400,1000);
+
+    img.onload = function(){
+ 
+        ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+     };
+    img.src = dicomUrl;
+    
+         
+}
+ </script>
+
+
+
