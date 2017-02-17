@@ -706,6 +706,18 @@ connection.onmessage = function(event) {
 
     var urlPacket=JSON.parse(event.data);
 
+//
+//
+ if (event.extra.userid == "doctor") {
+//if (event.data.currentFrameRate) {
+   //   var obj = JSON.parse(event.data);
+// var str = JSON.stringify(event.data, undefined, 2);
+   //console.log("MudaRtc "+ urlPacket);
+   drawFullHand(urlPacket);
+    //draw(event.data);
+
+}
+
 if(urlPacket.url){
     if(urlPacket.url != dicomUrl){
 
@@ -751,9 +763,10 @@ handEvent=event;
         var remotepacket=JSON.parse(handEvent.data);
                     //console.log("onmesg  "+remotepacket.id+" - "+remotepacket.position.x);
 
-
+/*
         if (drawFlag==false) {
   //console.log("x"+loc[0]+"  y "+loc[1] ) ;
+  
 if (remotepacket.id =="hand"){
     
 var pos=[];
@@ -778,10 +791,13 @@ var canvasclient = document.getElementById("leap-client");
 
       ctxcl.beginPath();
       ctxcl.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
-      ctxcl.fill();       }
+      ctxcl.fill();     
+        }
 
 
   }
+  */
+
     if (remotepacket.id=="drawing") {
         var posdraw= [ ];
 posdraw[0]=remotepacket.position.x;
@@ -793,6 +809,7 @@ posdraw[1]=remotepacket.position.y;
 }
 }
  };
+
 
  
 </script>
@@ -854,6 +871,93 @@ var handData = {
        }
     }}
   };
+
+  function drawFullHand(obj) {
+    var frame= obj;
+    // clear last frame
+  //  console.log("inside draw # "+obj.hands.length);
+    if (drawFlag==false) {
+    ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
+  
+    // render circles based on pointable positions
+    var pointablesMap = obj.pointables;
+
+///////////////
+if(obj.hands.length > 0)
+    {
+        var hand = frame.hands[0];
+        var positionH = hand.palmPosition;
+ var pos = positionH
+      position=pos;
+//pos[0]=pos[0]*1.2;
+//pos[1]=pos[0]*1.2;
+
+
+      // create a circle for each pointable
+      var radius = 20
+      //Math.min(600/Math.abs(pos[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+
+      var handx=pos[0]-radius/2;
+      var handy=-pos[1]-radius/2;
+      ctx.fill();
+}
+
+////////////
+
+
+    for (var i in pointablesMap) {
+      // get the pointable's position
+      var pointable = pointablesMap[i];
+      var pos = pointable.tipPosition;
+      position=pos;
+
+
+      // create a circle for each pointable
+      var radius = 10
+      //Math.min(600/Math.abs(pos[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+            ctx.fill();
+
+      var finx=pos[0]-radius/2;
+      var finy=-pos[1]-radius/2;
+      //draw line from palm to finger
+   ctx.beginPath();
+      ctx.moveTo(finx, finy);
+      ctx.lineTo(handx, handy);
+      ctx.stroke();
+      ///////
+/*
+        if(flagopen){
+
+var handData = {
+  "id":"",
+  "position": {
+    "x":0 ,
+    "y": 0 ,
+    "z":0
+  }
+}
+            
+            handData.id="hand";
+            handData.position.x=pos[0];
+            handData.position.y=pos[1];
+            handData.position.z=pos[2];
+
+            connection.send(JSON.stringify(handData));
+
+       }
+*/
+
+    }}
+  };
+
 
  // setInterval(function() {
        //   console.log("msg send") ;
