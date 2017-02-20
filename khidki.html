@@ -806,8 +806,8 @@ canvas.height = 900;
 ///////////////
 if(obj.hands.length > 0)
     {
-        var hand = frame.hands[0];
-        var positionH = hand.palmPosition;
+      /*  var hand = frame.hands[0];
+        var positionH = hand.sphereCenter;
  var pos = positionH
       position=pos;
 //pos[0]=pos[0]*1.2;
@@ -815,7 +815,7 @@ if(obj.hands.length > 0)
 
 
       // create a circle for each pointable
-      var radius = 20
+      var radius = 5
       //Math.min(600/Math.abs(pos[2]),20);
       //  console.log(radius);
 
@@ -825,6 +825,7 @@ if(obj.hands.length > 0)
       var handx=pos[0]-radius/2;
       var handy=-pos[1]-radius/2;
       ctx.fill();
+      */
 }
 
 ////////////
@@ -834,10 +835,64 @@ if(obj.hands.length > 0)
       // get the pointable's position
       var pointable = pointablesMap[i];
       var pos = pointable.tipPosition;
+      var pos1 = pointable.carpPosition;
+      var pos2 = pointable.pipPosition;
+
       position=pos;
 
+// create a circle for each pointable
+      var radius = 10
+      //Math.min(600/Math.abs(pos1[2]),20);
+      //  console.log(radius);
 
+      ctx.beginPath();
+      ctx.arc(pos1[0]-radius/2,-pos1[1]-radius/2,radius,0,2*Math.PI);
+            ctx.fill();
+
+      var finx1=pos1[0]-radius/2;
+      var finy1=-pos1[1]-radius/2;
+      //draw line from palm to finger
+ //  ctx.beginPath();
+  //    ctx.moveTo(finx1, finy1);
+  //    ctx.lineTo(handx, handy);
+   //   ctx.stroke();
+    
       // create a circle for each pointable
+
+
+//////pip bone///
+
+
+
+
+
+
+
+ // create a circle for each pointable
+      var radius = 10
+      //Math.min(600/Math.abs(pos2[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos2[0]-radius/2,-pos2[1]-radius/2,radius,0,2*Math.PI);
+            ctx.fill();
+
+      var finx2=pos2[0]-radius/2;
+      var finy2=-pos2[1]-radius/2;
+      //draw line from palm to finger
+   ctx.beginPath();
+      ctx.moveTo(finx1, finy1);
+      ctx.lineTo(finx2, finy2);
+      ctx.stroke();
+
+
+
+
+
+/////
+
+
+
       var radius = 10
       //Math.min(600/Math.abs(pos[2]),20);
       //  console.log(radius);
@@ -850,10 +905,11 @@ if(obj.hands.length > 0)
       var finy=-pos[1]-radius/2;
       //draw line from palm to finger
    ctx.beginPath();
-      ctx.moveTo(finx, finy);
-      ctx.lineTo(handx, handy);
+      ctx.moveTo(finx2, finy2);
+      ctx.lineTo(finx, finy);
       ctx.stroke();
       ///////
+      
 /*
         if(flagopen){
 
@@ -878,6 +934,7 @@ var handData = {
 
     }}
   };
+
 
  // setInterv
   function draw(obj) {
