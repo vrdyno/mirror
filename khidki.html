@@ -797,17 +797,6 @@ canvas.height = 900;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
    var ctxHandCanvas=null;
   var widthHandCanvas=null;
  var heightHandCanvas= null;
@@ -833,11 +822,44 @@ canvas.height = 900;
    ctxHandCanvas = el.getContext("2d");
  function drawScalled(obj) {
 
+  
+
+var red = '#F00', green = '#0F0', blue = '#00F', purple = '#A0F';
+// Create an array to save circle properties
+var fill=true;
+var color=red;
+    
+ 
         var pointablesMap = obj.pointables;
 
 
      ctxHandCanvas.clearRect(0, 0,  widthHandCanvas,  heightHandCanvas);
 
+
+
+
+if (drawFlag) {
+
+
+       if (typeof(obj.hands) != 'undefined' && obj.hands.length > 0) {
+          var targets = [];
+
+          for (var i=0; i<obj.hands.length; i++) {
+            var hand = obj.hands[i];
+            var x = hand.palmPosition[0];
+            var y = hand.palmPosition[1];
+            var z = hand.palmPosition[2];
+        }
+    }
+             var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+var poscircle=[];
+poscircle[0]=posX;
+poscircle[1]=posY;
+
+         drawCircle(poscircle, 10, color, fill);
+    
+}
 
     for (var i in pointablesMap) {
       // get the pointable's position
@@ -884,31 +906,13 @@ canvas.height = 900;
        ctxHandCanvas.fill();
  var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
     var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
-//////////////////////////////////////////////////////////////////////////////////////////////////
- ctx.beginPath();
+
+
+  ctx.beginPath();
       ctx.moveTo(posX, posY);
       ctx.lineTo(posX1, posY1);
       ctx.stroke();
-
-
-
-
-
-
-//EDIT HERE
-
-
-
-
-
-
-
-
-
-
-
-///////////////////////////////
-
+ 
        var x = pos2[0];
        var y = pos2[1];
        var z = pos2[2];
@@ -935,43 +939,12 @@ canvas.height = 900;
 
   }
 
-/*
-
-     if (typeof(obj.hands) != 'undefined' && obj.hands.length > 0) {
-          var targets = [];
-
-          for (var i=0; i<obj.hands.length; i++) {
-            var hand = obj.hands[i];
-            var x = hand.palmPosition[0];
-            var y = hand.palmPosition[1];
-            var z = hand.palmPosition[2];
-
-            if (z < 10) { z = 10; }
-            targets.push({ 'x': x, 'y': y, 'z': z });
-          }
-      }
-
-*/
-
-  
-  /*
-    for (var i=0; i<targets.length; i++) {
-      var target = targets[i];
-       ctxHandCanvas.arc( scale(target.x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
-                      scale(target.y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
-                     target.z, 0, Math.PI*2, true);
-       ctxHandCanvas.closePath();
-       ctxHandCanvas.fill();
-    }
-
-    */
+ 
   }
 
   function scale(value, oldMin, oldMax, newMin, newMax) {
     return (((newMax - newMin) * (value - oldMin)) / (oldMax - oldMin)) + newMin;
   }
-
-
 
 
 
