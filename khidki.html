@@ -793,205 +793,189 @@ canvas.height = 900;
   var position
   // render each frame
 
-  function drawFullHand(obj) {
-    var frame= obj;
-    // clear last frame
-  //  console.log("inside draw # "+obj.hands.length);
-    if (drawFlag==false) {
-    ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
   
-    // render circles based on pointable positions
-    var pointablesMap = obj.pointables;
-
-///////////////
-if(obj.hands.length > 0)
-    {
-      /*  var hand = frame.hands[0];
-        var positionH = hand.sphereCenter;
- var pos = positionH
-      position=pos;
-//pos[0]=pos[0]*1.2;
-//pos[1]=pos[0]*1.2;
 
 
-      // create a circle for each pointable
-      var radius = 5
-      //Math.min(600/Math.abs(pos[2]),20);
-      //  console.log(radius);
 
-      ctx.beginPath();
-      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
 
-      var handx=pos[0]-radius/2;
-      var handy=-pos[1]-radius/2;
-      ctx.fill();
-      */
-}
 
-////////////
+
+
+
+
+
+
+
+
+
+   var ctxHandCanvas=null;
+  var widthHandCanvas=null;
+ var heightHandCanvas= null;
+ var leapMinX= -200;
+ var leapMaxX= 200;
+ var leapMinY= 100;
+ var leapMaxY= 600;
+ var leapMinZ= -180;
+ var leapMaxZ=180;
+   var el = document.getElementById("leap-overlay");
+
+            var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+  var colabEleHeight= parseFloat(colabEleStyle.height);
+ 
+   var w = widthHandCanvas = colabEleWidth;
+    var h = heightHandCanvas = colabEleHeight;
+
+    $(el).attr('width', w).css('width', w).attr('height', h).css('height', h);
+   // $(el).css('position', 'absolute').css('left', '0').css('top', '0');
+
+   ctxHandCanvas = el.getContext("2d");
+ function drawScalled(obj) {
+
+        var pointablesMap = obj.pointables;
+
+
+     ctxHandCanvas.clearRect(0, 0,  widthHandCanvas,  heightHandCanvas);
 
 
     for (var i in pointablesMap) {
       // get the pointable's position
       var pointable = pointablesMap[i];
       var pos = pointable.tipPosition;
-      var pos1 = pointable.carpPosition;
-      var pos2 = pointable.pipPosition;
+      var pos1 = pointable.pipPosition;
+      var pos2 = pointable.carpPosition;
 
-      position=pos;
+       var x = pos[0];
+       var y = pos[1];
+       var z = pos[2];
 
-// create a circle for each pointable
-      var radius = 10
-      //Math.min(600/Math.abs(pos1[2]),20);
-      //  console.log(radius);
+            if (z < 10) { z = 10; }
+            if (z > 15) { z = 15; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
 
-      ctx.beginPath();
-      ctx.arc(pos1[0]-radius/2,-pos1[1]-radius/2,radius,0,2*Math.PI);
-            ctx.fill();
-
-      var finx1=pos1[0]-radius/2;
-      var finy1=-pos1[1]-radius/2;
-      //draw line from palm to finger
- //  ctx.beginPath();
-  //    ctx.moveTo(finx1, finy1);
-  //    ctx.lineTo(handx, handy);
-   //   ctx.stroke();
-    
-      // create a circle for each pointable
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
 
 
-//////pip bone///
+        var x = pos1[0];
+       var y = pos1[1];
+       var z = pos1[2];
 
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
 
-
-
-
-
-
- // create a circle for each pointable
-      var radius = 10
-      //Math.min(600/Math.abs(pos2[2]),20);
-      //  console.log(radius);
-
-      ctx.beginPath();
-      ctx.arc(pos2[0]-radius/2,-pos2[1]-radius/2,radius,0,2*Math.PI);
-            ctx.fill();
-
-      var finx2=pos2[0]-radius/2;
-      var finy2=-pos2[1]-radius/2;
-      //draw line from palm to finger
-   ctx.beginPath();
-      ctx.moveTo(finx1, finy1);
-      ctx.lineTo(finx2, finy2);
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+ var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+//////////////////////////////////////////////////////////////////////////////////////////////////
+ ctx.beginPath();
+      ctx.moveTo(posX, posY);
+      ctx.lineTo(posX1, posY1);
       ctx.stroke();
 
 
 
 
 
-/////
+
+//EDIT HERE
 
 
 
-      var radius = 10
-      //Math.min(600/Math.abs(pos[2]),20);
-      //  console.log(radius);
 
-      ctx.beginPath();
-      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
-            ctx.fill();
 
-      var finx=pos[0]-radius/2;
-      var finy=-pos[1]-radius/2;
-      //draw line from palm to finger
-   ctx.beginPath();
-      ctx.moveTo(finx2, finy2);
-      ctx.lineTo(finx, finy);
+
+
+
+
+
+
+///////////////////////////////
+
+       var x = pos2[0];
+       var y = pos2[1];
+       var z = pos2[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill(); 
+      var posX2= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY2= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+ ctx.beginPath();
+      ctx.moveTo(posX1, posY1);
+      ctx.lineTo(posX2, posY2);
       ctx.stroke();
-      ///////
-      
-/*
-        if(flagopen){
 
-var handData = {
-  "id":"",
-  "position": {
-    "x":0 ,
-    "y": 0 ,
-    "z":0
+
   }
-}
-            
-            handData.id="hand";
-            handData.position.x=pos[0];
-            handData.position.y=pos[1];
-            handData.position.z=pos[2];
 
-            connection.send(JSON.stringify(handData));
+/*
 
-       }
+     if (typeof(obj.hands) != 'undefined' && obj.hands.length > 0) {
+          var targets = [];
+
+          for (var i=0; i<obj.hands.length; i++) {
+            var hand = obj.hands[i];
+            var x = hand.palmPosition[0];
+            var y = hand.palmPosition[1];
+            var z = hand.palmPosition[2];
+
+            if (z < 10) { z = 10; }
+            targets.push({ 'x': x, 'y': y, 'z': z });
+          }
+      }
+
 */
 
-    }}
-  };
-
-
- // setInterv
-  function draw(obj) {
-    // clear last frame
-    if (drawFlag==false) {
-    ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
   
-    // render circles based on pointable positions
-    var pointablesMap = obj.pointablesMap;
-    for (var i in pointablesMap) {
-      // get the pointable's position
-      var pointable = pointablesMap[i];
-      var pos = pointable.tipPosition;
-      position=pos;
+  /*
+    for (var i=0; i<targets.length; i++) {
+      var target = targets[i];
+       ctxHandCanvas.arc( scale(target.x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(target.y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     target.z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    }
 
-
-      // create a circle for each pointable
-      var radius = 70
-      //Math.min(600/Math.abs(pos[2]),20);
-      //  console.log(radius);
-
-      ctx.beginPath();
-      ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
-      ctx.fill();
-        if(flagopen){
-
-var handData = {
-  "id":"",
-  "position": {
-    "x":0 ,
-    "y": 0 ,
-    "z":0
+    */
   }
-}
-            
-            handData.id="hand";
-            handData.position.x=pos[0];
-            handData.position.y=pos[1];
-            handData.position.z=pos[2];
 
-            connection.send(JSON.stringify(handData));
+  function scale(value, oldMin, oldMax, newMin, newMax) {
+    return (((newMax - newMin) * (value - oldMin)) / (oldMax - oldMin)) + newMin;
+  }
 
-       }
-    }}
-  };
 
- // setInterval(function() {
-       //   console.log("msg send") ;
-     
 
-        //    connection.send('collab test'+document.getElementById('user-id').value);
-  //    }, 0.001);
 
-  
-  // listen to Leap Motion
-  //Leap.loop(draw);
-var dicomUrl="";
+
+  var dicomUrl="";
 function drawImageDicom(){
     if (dicomUrl) {
     var ctximg = $("#dicom")[0].getContext("2d"),
