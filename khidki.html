@@ -857,16 +857,16 @@ var color=red;
 }
 */
 
-//drawFlag=false;
+drawFlag=false;
 
        if (typeof(obj.hands) != 'undefined' && obj.hands.length > 0) {
           var targets = [];
 
           for (var i=0; i<obj.hands.length; i++) {
             var hand = obj.hands[i];
-           //   if(hand.pinchStrength > 0.1){
-//drawFlag=true;
-           //   }
+              if(hand.pinchStrength > 0.1){
+drawFlag=true;
+              }
             var x = hand.palmPosition[0];
             var y = hand.palmPosition[1];
             var z = hand.palmPosition[2];
@@ -1993,6 +1993,5 @@ dicomeZoomInImage.width=zoomInWidth;
          
 }
  </script>
-
 
 
