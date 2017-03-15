@@ -479,6 +479,7 @@ connection.bandwidth = {
     screen: 300      // 300kbps
 };
 */
+connection.bandwidth = { audio: 50,    data: 1024, video: 256 };
  connection.onstream = function(e) {
    // if (e.type == 'local') {
 var vid = document.createElement("video");  
