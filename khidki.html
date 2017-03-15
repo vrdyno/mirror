@@ -562,66 +562,110 @@ drawImageDicom();
 ////
 ////
 var handEvent;
- 
+
+  var flagRemoteWrite=false;
+  var RemotePacketGlobal;
+
+
 var videoSizeFlag=false;
 connection.onmessage = function(event) {
+
     var urlPacket=JSON.parse(event.data);
     var Packet=JSON.parse(event.data);
+
 //
  
     //draw(event.data);
+
+
+
 if(urlPacket.url){
     if(urlPacket.url != dicomUrl){
+
                    // console.log("url new  "+urlPacket.id+" - "+urlPacket.url);
                  dicomUrl=urlPacket.url;
                 drawImageDicom();
 }
 }
 ///dicome size data respnce
+
 if(urlPacket.maxDicom){
    
+
                 dicomFullScreenRemote();
                 urlPacket.maxDicom=false;
+
   // console.log("agaun-onmsg maxDicom");
 }
  
+
+
 //videoscreen size data response
 if(urlPacket.max){
    
+
                 fullscreenRemote();
                 urlPacket.max=false;
+
  }
 if(urlPacket.min){
    
+
                 cancelfullscreenRemote();
                 urlPacket.min=false;
  
 }
+
+
 handEvent=event;
+
        if (event.extra.userid == "doctor") {
        if(flagopen){
+        var remotepacket=JSON.parse(handEvent.data);
+
+
 
 if(Packet.id=="hand"){
+  flagRemoteWrite=true;
 
-//console.log("coming hand");
-drawScalledRemote(Packet);
+console.log("coming hand");
+//drawScalledRemote(Packet);
+RemotePacketGlobal=Packet;
 
 }
 
 
-        var remotepacket=JSON.parse(handEvent.data);
     if(remotepacket.id=="drawing") {
         var posdraw= [ ];
 posdraw[0]=remotepacket.position.x;
 posdraw[1]=remotepacket.position.y;
+
         drawRemoteCircle(posdraw);
+
       }
     else{
-         // drawScalled(Packet);
+
+        //   drawScalled(Packet);
+
       }
 }
 }
  };
+
+
+
+(function myAnimation() {
+      requestAnimationFrame(myAnimation);
+      // other code for animation
+if(flagRemoteWrite){
+if(RemotePacketGlobal){
+  console.log("globar");
+      drawScalledRemote(RemotePacketGlobal);}
+}
+
+  })();
+
+
  
 </script>
 <script>
@@ -1264,6 +1308,7 @@ function dicomFullScreenRemote(){
 function drawScalledRemote(obj) {
 
   //console.log(obj);
+    ctxHandCanvas.fillStyle = "pink";
 
      ctxHandCanvas.clearRect(0, 0,  widthHandCanvas,  heightHandCanvas);
 
