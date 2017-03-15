@@ -654,17 +654,29 @@ posdraw[1]=remotepacket.position.y;
 
 
 
-(function myAnimation() {
-      requestAnimationFrame(myAnimation);
-      // other code for animation
+
+
+
+
+////////////
+
+var fps = 15;
+
+function draw() {
+    setTimeout(function() {
+        requestAnimationFrame(draw);
 if(flagRemoteWrite){
 if(RemotePacketGlobal){
   console.log("globar");
       drawScalledRemote(RemotePacketGlobal);}
 }
 
-  })();
+        // ... Code for Drawing the Frame ...
 
+    }, 1000 / fps);
+}
+
+draw();
 
  
 </script>
