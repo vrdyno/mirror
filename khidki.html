@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +20,7 @@
     
     /* Add a gray background color and some padding to the footer */
     footer {
+
       background-color: #f2f2f2;
       padding: 25px;
     }
@@ -38,6 +38,7 @@
     padding-top: 60px;
     text-align:center;
 }
+
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
@@ -45,14 +46,18 @@
     color: #818181;
     display: block;
     transition: 0.3s
+
 }
 p {
     font-family: "Times New Roman", Times, serif;
         font-weight: bold;
+
 }
+
 .sidenav a:hover{
     color: #f1f1f1;
 }
+
 .sidenav .closebtn {
     position: absolute;
     top: 0;
@@ -60,10 +65,12 @@ p {
     font-size: 36px;
     margin-left: 50px;
 }
+
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
 .buttonCall {
     background-color: #4CAF50; /* Green */
     border: none;
@@ -76,17 +83,21 @@ p {
     margin: 4px 2px;
     cursor: pointer;
 }
+
   .button2 {background-color: #008CBA;} /* Blue */
+
   .button5 {background-color: #555555;} /* Black */
   .buttonsmall {font-size: 10px;}
+
 .center {
     margin: auto;
     width: 80%;
      padding: 20px;
 }
+
   </style>
 </head>
-<body style="background-color: #DCD8CF">
+<body  onload="init();" style="background-color: #DCD8CF">
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -151,9 +162,19 @@ Dicom Url: <input type="url" id="dicomUrl" value="" placeholder="paste dicom lin
 function openNav() {
     document.getElementById("mySidenav").style.width = "100%";
 }
+
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+
+
+
+
+
+
+
+
+
 </script>
 
 
@@ -164,17 +185,33 @@ function closeNav() {
     <input type="text" id="input-text-chat" placeholder="..." disabled>
     <button id="share-file" disabled>...</button>
     <br>
+
+
+
     <div id="file-container"></div>
     <div class="chat-output"></div>
 </div>
+
+
+
+
 <script src="js/FileBufferReader.js"></script>
+
 <!-- socket.io for signaling -->
 <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+
  
+
+
+
+
  
+
+
   <div class="row" style="margin-top: 6px;">
   
     <div class="col-sm-11">
+
     <div  style=" height: 800; background-color: #C9C9C9">
      
     <div class="row" >
@@ -191,6 +228,8 @@ function closeNav() {
     box-sizing: border-box;">
  <i id="disableDrawing" style="margin: 5px" class="material-icons">close</i>
 </div>
+
+
 <div style=" width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
@@ -221,6 +260,7 @@ function closeNav() {
     box-sizing: border-box;">
  <i id="fullscreenDicom" style=" display: none; background-color: #94b4b4; margin: 5px" class="material-icons">launch</i>
 </div>
+
 <div id="dicom-zoom-in" style="  background-color: #94b4b4; width: 35px; margin-left: 5px; margin-top: 2px;
     height: 35px;
     border: 1px solid Black;
@@ -233,9 +273,80 @@ function closeNav() {
     box-sizing: border-box;">
  <i style="margin: 5px" class="material-icons">zoom_out</i>
 </div>
+
+<h1 style=" display: none;" >Leap WebSocket JSON Viewer</h1>
+<button style=" display: none;" id="pause" onclick="togglePause()">Pause</button>
+<input style=" display: none;" type="checkbox" id="pauseOnGesture" onclick="pauseForGestures()">
+<div style="; display: none;" id="connection">WebSocket connection open!</div>
+<div id="main" style="visibility: visible; display: none;">
+  <h3>Last WebSocket event:</h3>
+  <div id="eventoutput"><pre>{
+  "event": {
+    "state": {
+      "attached": true,
+      "id": "S323A016492",
+      "streaming": true,
+      "type": "peripheral"
+    },
+    "type": "deviceEvent"
+  }
+}</pre></div>
+  <h3>JSON Frame data:</h3>
+  <div id="frameoutput"><pre>{
+  "currentFrameRate": 30.0146,
+  "devices": [],
+  "gestures": [],
+  "hands": [],
+  "id": 465028,
+  "interactionBox": {
+    "center": [
+      0,
+      200,
+      0
+    ],
+    "size": [
+      235.247,
+      235.247,
+      147.751
+    ]
+  },
+  "pointables": [],
+  "r": [
+    [
+      0.978964,
+      -0.153692,
+      -0.134198
+    ],
+    [
+      0.175905,
+      0.969007,
+      0.173443
+    ],
+    [
+      0.103382,
+      -0.193401,
+      0.975658
+    ]
+  ],
+  "s": 1.17951,
+  "t": [
+    -30.8065,
+    24.589,
+    -2.15701
+  ],
+  "timestamp": 1487326358391548
+}</pre></div>
+</div>
+
+
+
     </div>
+
 <div id="colab-div" class="col-sm-10" style="overflow: hidden; ">
+
+
   
+
    <div id="canvasesdiv"    
  style="position:relative; width:100%; height:700px;  background-color: #e7e7e7;">
 <canvas id="dicom"
@@ -254,6 +365,7 @@ top:0px;
 " id="board" width="250px"  >
   
 </video>
+
 <canvas id="drawing-surface"
 style="z-index: 3;
 position:absolute;
@@ -286,10 +398,14 @@ top:0px;
 " height="900px" width="1600px">
 This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
+
 </div>
+
  
 </div>
+
 </div>
+
 </div>
     </div>
   
@@ -301,14 +417,20 @@ This text is displayed if your browser does not support HTML5 Canvas.
             </div>
             </div>
             </div>
+
 </div>
+
    <label for="room-id"  style=" display:none; ">Room Id </label>
 <input type="text" id="room-id" value="wanClouds" style="display: none"></br>
+
  
 <button id="open-or-join-room"  style=" display:none;">Auto Open Or Join Room</button>
+
+
            
      
  
+
 <footer  style=" margin-top: 6cm;"  
  class="container-fluid text-center">
  
@@ -317,27 +439,39 @@ This text is displayed if your browser does not support HTML5 Canvas.
 </p>
  
 </footer>
+
 </body>
 </html>
+
+
 <script src="js/RTCMultiConnection.js"></script>
+
 <script type="text/javascript">
 var flagopen = false; //bool
+
     
+
     // ......................................................
 // .......................UI Code........................
 // ......................................................
 document.getElementById('open-room').onclick = function() {
     this.disabled = true;
     document.getElementById("join-room").disabled = true;
+
+
     connection.extra = {
   userid: document.getElementById('user-id').value
+
   //only open room user is the admin and he can set the dicom url
 };
     connection.open(document.getElementById('room-id').value);
+
+
 };
 document.getElementById('join-room').onclick = function() {
     this.disabled = true;
     document.getElementById("open-room").disabled = true;
+
         connection.extra = {
   userid: document.getElementById('user-id').value
 };
@@ -380,86 +514,109 @@ function appendDIV(event) {
 // ......................................................
 // ..................RTCMultiConnection Code.............
 // ......................................................
+
 var connection = new RTCMultiConnection();
 connection.extra = {
   userid: document.getElementById('user-id').value
 };
+
 /////selelct camera code///
+
   var videoDevices = document.getElementById('video-devices');
             var audioDevices = document.getElementById('audio-devices');
+
             connection.DetectRTC.load(function() {
                 connection.DetectRTC.MediaDevices.forEach(function(device) {
                     if(document.getElementById(device.id)) {
                         return;
                     }
+
                     if(device.kind === 'audioinput') {
                         var option = document.createElement('option');
                         option.id = device.id;
                         option.innerHTML = device.label || device.id;
                         option.value = device.id;
                         audioDevices.appendChild(option);
+
                         if(connection.mediaConstraints.audio.optional.length && connection.mediaConstraints.audio.optional[0].sourceId === device.id) {
                             option.selected = true;
                         }
                     }
+
                     if(device.kind.indexOf('video') !== -1) {
                         var option = document.createElement('option');
                         option.id = device.id;
                         option.innerHTML = device.label || device.id;
                         option.value = device.id;
                         videoDevices.appendChild(option);
+
                         if(connection.mediaConstraints.video.optional.length && connection.mediaConstraints.video.optional[0].sourceId === device.id) {
                             option.selected = true;
                         }
                     }
                 });
             });
+
             document.getElementById('switch-camera').onclick = function() {
                 var videoSourceId = videoDevices.value;
+
                 if(connection.mediaConstraints.video.optional.length && connection.attachStreams.length) {
                     if(connection.mediaConstraints.video.optional[0].sourceId === videoSourceId) {
                         alert('Selected video device is already selected.');
                         return;
                     }
                 }
+
                 connection.attachStreams.forEach(function(stream) {
                     stream.getVideoTracks().forEach(function(track) {
                         stream.removeTrack(track);
+
                         if(track.stop) {
                             track.stop();
                         }
                     });
                 });
+
                 connection.mediaConstraints.video.optional = [{
                     sourceId: videoSourceId
                 }];
+
             };
+
             document.getElementById('switch-microphone').onclick = function() {
                 var audioSourceId = audioDevices.value;
+
                 if(connection.mediaConstraints.audio.optional.length && connection.attachStreams.length) {
                     if(connection.mediaConstraints.audio.optional[0].sourceId === audioSourceId) {
                         alert('Selected audio device is already selected.');
                         return;
                     }
                 }
+
                 connection.attachStreams.forEach(function(stream) {
                     stream.getAudioTracks().forEach(function(track) {
                         stream.removeTrack(track);
+
                         if(track.stop) {
                             track.stop();
                         }
                     });
                 });
+
                 connection.mediaConstraints.audio.optional = [{
                     sourceId: videoSourceId
                 }];
+
                 connection.captureUserMedia();
             };
+
+
 ///select camera////
 var localVideo = document.getElementById('board');  //this is the remote stream handler
 //var divpeer = document.getElementById('peers-view');
 //console.log(divpeer.style.width);
 //console.log ( '#someButton was clicked' );
+
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 connection.enableFileSharing = true; // by default, it is "false".
 connection.session = {
@@ -471,6 +628,7 @@ connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
 };
+
 /* 
 connection.bandwidth = {
     audio: 50,
@@ -479,13 +637,15 @@ connection.bandwidth = {
     screen: 300      // 300kbps
 };
 */
-connection.bandwidth = { audio: 50,    data: 1024, video: 256 };
  connection.onstream = function(e) {
    // if (e.type == 'local') {
 var vid = document.createElement("video");  
 if(e.extra.userid=="doctor"){
             localVideo.muted = true;
+
 //flexible gui code
+
+
                    // var colabEleStyle = window.getComputedStyle(document.getElementById("colab-div"));
  //console.log(colabEleStyle.width);
  //var colabEleWidth = parseFloat(colabEleStyle.width);
@@ -497,10 +657,17 @@ if(e.extra.userid=="doctor"){
 //localVideo.width=percentColabwidth.toString();
  //vid.style.margin= percentmargin.toString()+"px";
 // console.log(percentColabwidth.toString());
+
 //localVideo.width=percentColabwidth.toString();
+
 ////flexible gui code
+
+
+
           attachMediaStream(localVideo, e.stream);
 localVideo.play();
+
+
 }
 else{
 vid.id=e.extra.userid;
@@ -510,32 +677,53 @@ var eleWidth = parseFloat(eleStyle.width);
   
   var percentwidth=(eleWidth/100)*90;
        var percentmargin=(percentwidth/100)*5;
+
    percentwidth.toString();
    vid.width = percentwidth;
+
  vid.style.margin= percentmargin.toString()+"px";
  //console.log(percentmargin.toString()+"px");
+
  vid.controls =true;
         vid.muted = true;
+
          attachMediaStream(vid, e.stream);
+
  
     //all flexible gui code
+
  
   document.getElementById("peers-view").appendChild(vid); 
                     vid.play();
+
+
+
    //localVideo.play(); 
+
       //  console.log(e.extra.userid);
     
       //  localVideo.style.opacity = 1;
+
     
  //}
   }
   //set url and display in canvas
   dicomUrl= e.extra.dicomUrl;
+
 };
+
  
 ///////////////////////collabration////////////////
+
+
+
  
+
 ///////////////////////////collabration//////////////////////
+
+
+
+
    attachMediaStream = function(element, stream) {
         if (typeof element.srcObject !== 'undefined') {
             element.srcObject = stream;
@@ -546,8 +734,10 @@ var eleWidth = parseFloat(eleStyle.width);
         } else {
             console.log('Error attaching stream to element.');
         }
+
  
     };
+
 //connection.onmessage = appendDIV;
 connection.filesContainer = document.getElementById('file-container');
 connection.onopen = function() {
@@ -556,85 +746,112 @@ drawImageDicom();
 //alert(connection.getAllParticipants().length);
   // setInterval(function() {
        //   console.log("msg send") ;
+
         //    connection.send('collab test'+document.getElementById('user-id').value);
         //}, 5000);
+
+
+
     document.getElementById('share-file').disabled      = false;
     document.getElementById('input-text-chat').disabled = false;
 };
+
+
+
 ////
+
+
 ////
 var handEvent;
+
  
 var videoSizeFlag=false;
 connection.onmessage = function(event) {
+
     var urlPacket=JSON.parse(event.data);
+    var Packet=JSON.parse(event.data);
+
+//
+ 
+    //draw(event.data);
+
+
+
 if(urlPacket.url){
     if(urlPacket.url != dicomUrl){
+
                    // console.log("url new  "+urlPacket.id+" - "+urlPacket.url);
                  dicomUrl=urlPacket.url;
                 drawImageDicom();
 }
 }
 ///dicome size data respnce
+
 if(urlPacket.maxDicom){
    
+
                 dicomFullScreenRemote();
                 urlPacket.maxDicom=false;
+
   // console.log("agaun-onmsg maxDicom");
 }
  
+
+
 //videoscreen size data response
 if(urlPacket.max){
    
+
                 fullscreenRemote();
                 urlPacket.max=false;
+
  }
 if(urlPacket.min){
    
+
                 cancelfullscreenRemote();
                 urlPacket.min=false;
  
 }
+
+
 handEvent=event;
+
        if (event.extra.userid == "doctor") {
        if(flagopen){
         var remotepacket=JSON.parse(handEvent.data);
-                    //console.log("onmesg  "+remotepacket.id+" - "+remotepacket.position.x);
-        if (drawFlag==false) {
-  //console.log("x"+loc[0]+"  y "+loc[1] ) ;
-if (remotepacket.id =="hand"){
-    
-var pos=[];
-pos[0]=remotepacket.position.x;
-pos[1]=remotepacket.position.y;
-                    //console.log("onmesg position  "+pos[0]+" - "+pos[1]);
-    var radius = 70;
-      //  console.log(radius);
-var canvasclient = document.getElementById("leap-client");
-  
-  // fullscreen
-  canvasclient.width = 1600;
-  canvasclient.height = 900;
-  
-  // create a rendering context
-  var ctxcl = canvasclient.getContext("2d");
-  ctxcl.translate(canvasclient.width/2,canvasclient.height);
-  ctxcl.fillStyle = "#7b63b8";
-      ctxcl.beginPath();
-      ctxcl.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
-      ctxcl.fill();       }
-  }
-    if (remotepacket.id=="drawing") {
+
+
+
+if(Packet.id=="hand"){
+
+//console.log("coming hand");
+drawScalledRemote(Packet);
+
+}
+
+
+    if(remotepacket.id=="drawing") {
         var posdraw= [ ];
 posdraw[0]=remotepacket.position.x;
 posdraw[1]=remotepacket.position.y;
+
         drawRemoteCircle(posdraw);
+
+      }
+    else{
+
+        //   drawScalled(Packet);
+
       }
 }
 }
  };
+
  
 </script>
+
+
 <script>
   var canvas = document.getElementById("leap-overlay");
   
@@ -646,28 +863,103 @@ canvas.height = 900;
   var ctx = canvas.getContext("2d");
   ctx.translate(canvas.width/2,canvas.height);
   ctx.fillStyle = "rgba(0,2,3,0.7)";
-  var position
+  var position;
   // render each frame
-  function draw(obj) {
+  function drawFullHand(obj) {
+    var frame= obj;
     // clear last frame
+  //  console.log("inside draw # "+obj.hands.length);
     if (drawFlag==false) {
     ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
   
     // render circles based on pointable positions
-    var pointablesMap = obj.pointablesMap;
+    var pointablesMap = obj.pointables;
+
+
+
+
     for (var i in pointablesMap) {
       // get the pointable's position
       var pointable = pointablesMap[i];
       var pos = pointable.tipPosition;
+      var pos1 = pointable.carpPosition;
+      var pos2 = pointable.pipPosition;
+
       position=pos;
+
+// create a circle for each pointable
+      var radius = 10
+      //Math.min(600/Math.abs(pos1[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos1[0]-radius/2,-pos1[1]-radius/2,radius,0,2*Math.PI);
+            ctx.fill();
+
+      var finx1=pos1[0]-radius/2;
+      var finy1=-pos1[1]-radius/2;
+      //draw line from palm to finger
+ //  ctx.beginPath();
+  //    ctx.moveTo(finx1, finy1);
+  //    ctx.lineTo(handx, handy);
+   //   ctx.stroke();
+    
       // create a circle for each pointable
-      var radius = 70
+
+
+//////pip bone///
+
+
+
+
+
+
+
+ // create a circle for each pointable
+      var radius = 10
+      //Math.min(600/Math.abs(pos2[2]),20);
+      //  console.log(radius);
+
+      ctx.beginPath();
+      ctx.arc(pos2[0]-radius/2,-pos2[1]-radius/2,radius,0,2*Math.PI);
+            ctx.fill();
+
+      var finx2=pos2[0]-radius/2;
+      var finy2=-pos2[1]-radius/2;
+      //draw line from palm to finger
+   ctx.beginPath();
+      ctx.moveTo(finx1, finy1);
+      ctx.lineTo(finx2, finy2);
+      ctx.stroke();
+
+
+
+
+
+/////
+
+
+
+      var radius = 10
       //Math.min(600/Math.abs(pos[2]),20);
       //  console.log(radius);
+
       ctx.beginPath();
       ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
-      ctx.fill();
+            ctx.fill();
+
+      var finx=pos[0]-radius/2;
+      var finy=-pos[1]-radius/2;
+      //draw line from palm to finger
+   ctx.beginPath();
+      ctx.moveTo(finx2, finy2);
+      ctx.lineTo(finx, finy);
+      ctx.stroke();
+      ///////
+      
+/*
         if(flagopen){
+
 var handData = {
   "id":"",
   "position": {
@@ -681,18 +973,25 @@ var handData = {
             handData.position.x=pos[0];
             handData.position.y=pos[1];
             handData.position.z=pos[2];
+
             connection.send(JSON.stringify(handData));
+
        }
+*/
+
     }}
   };
+
  // setInterval(function() {
        //   console.log("msg send") ;
      
+
         //    connection.send('collab test'+document.getElementById('user-id').value);
   //    }, 0.001);
+
   
   // listen to Leap Motion
-  //Leap.loop(draw);
+ // Leap.loop(draw);
 var dicomUrl="";
 function drawImageDicom(){
     if (dicomUrl) {
@@ -700,16 +999,20 @@ function drawImageDicom(){
         img = new Image();
     
          ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
       var height = img.height;
   var width = img.width;
    dicomeZoomInImage=img;
+
         ctximg.drawImage(img, 0, 0, width, height);
      };
     img.src = dicomUrl;
  }
  }
+
 function setDicomUrl() {
+
 var urlData = {
   "id":"url",
   "url": document.getElementById('dicomUrl').value
@@ -718,12 +1021,17 @@ var urlData = {
 if(document.getElementById('dicomUrl').value != ""){
 connection.send(JSON.stringify(urlData));
 }
+
 dicomUrl=document.getElementById("dicomUrl").value;
 dicomUrlExtra=dicomUrl;
 drawImageDicom()
 }
+
 var dicomUrlExtra;
+
+
 //draw
+
 var drawFlag=false;
 var Drawing = document.getElementById('drawing-surface');
 var ctxDrawing = Drawing.getContext('2d');
@@ -735,12 +1043,14 @@ var width = Drawing.width, height = Drawing.height;
 var red = '#F00', green = '#0F0', blue = '#00F', purple = '#A0F';
 // Create an array to save circle properties
 var circles = [ ];
+
 // Draw a circle with the given parameters:
 //   center: float array [x, y]
 //   radius: float > 0
 //   color: string "#RGB"
 //   fill: boolean
 function drawCircle(center, radius, color, fill) {
+
     //send drawing to peer\\
  if(drawFlag){
     var drawingData = {
@@ -756,7 +1066,9 @@ function drawCircle(center, radius, color, fill) {
             drawingData.position.y=center[1];
        
                 connection.send(JSON.stringify(drawingData));
+
                 //
+
 radius=5;
   // Make an closed arc with a complete rotation
  
@@ -773,6 +1085,46 @@ radius=5;
   //  ctxDrawing.stroke();
  // }
 }}
+
+
+function drawCircle(center, radius, color, fill) {
+
+    //send drawing to peer\\
+ if(drawFlag){
+    var drawingData = {
+  "id":"",
+  "position": {
+    "x":0 ,
+    "y": 0 
+  }
+}
+            //
+            drawingData.id="drawing";
+            drawingData.position.x=center[0];
+            drawingData.position.y=center[1];
+       
+                connection.send(JSON.stringify(drawingData));
+
+                //
+
+radius=5;
+  // Make an closed arc with a complete rotation
+ 
+  ctxDrawing.beginPath();
+  ctxDrawing.arc(center[0], center[1], radius, 0, 2*Math.PI);
+  ctxDrawing.closePath();
+  ctxDrawing.lineWidth = 10;
+  // Choose whether to fill or outline the circle
+  //if (fill) {
+    ctxDrawing.fillStyle = color;
+    ctxDrawing.fill();
+ // } else {
+  //  ctxDrawing.strokeStyle = color;
+  //  ctxDrawing.stroke();
+ // }
+}}
+
+
 function drawRemoteCircle(center) {
        
 radius=5;
@@ -793,75 +1145,26 @@ color= purple;
   //  ctxDrawing.stroke();
  // }
 }
-// Transform Leap coordinates to canvasDrawing scene coordinates
-function leapToScene(position) {
-  var x = position[0];
-  var y = position[1];
-  // Shift the Leap origin to the canvasDrawing's bottom center and invert the y-axis
-  return [width/2 + x, height - y];
-}
-// Create a Leap controller to access frame data
-var controller = new Leap.Controller();
-// Register a callback to process frame data
-controller.on('frame', function(frame) {
-  // Clear the canvasDrawing so we can repaint
- // ctxDrawing.clearRect(0, 0, width, height);
-  
-  // Draw a green circle to test the canvasDrawing
- // drawCircle([width/2, 50], 20, green);
-  
-  // Make sure we have accumulated at most 200 circles
-  if (circles.length > 200) {
-    circles = circles.slice(-200); // Last 200 circles
-  }
-  
-  // Redraw accumulated circles
-  for (var c = 0; c < circles.length; c = c+1) {
-    // Retrieve the circle properties
-    var center = circles[c].center;
-    var radius = circles[c].radius;
-    // Redraw the circle filled in purple
-   // drawCircle(center, radius, purple, true);
-  }
-  
-  // Draw finger tips as colored circles
-  for (var f = 0; f < frame.fingers.length; f = f+1) {
-    var finger = frame.fingers[f];
-    // Calculate the circle center and radius
-    var center = leapToScene(finger.tipPosition);
-    var radius = Math.abs(finger.touchDistance) * 1.5;
-    // Determine if the finger is touching or not
-    var touching = finger.touchZone == 'touching';
-    // Decide the circle color and whether to fill it
-    var color;
-    var fill;
-    if (touching) {
-      color = red;
-      fill = true;
-      // Save the circle properties to redraw it later
-      var circle = {center: center, radius: radius};
-      circles.push(circle);
-    }
-    else {
-      color = blue;
-      fill = false;
-    }
-    // Finally, draw the circle
-    drawCircle(center, radius, color, fill);
-  }
-});
-// Connect the controller to start receiving data
-//controller.connect();
+
+
+ 
+
 document.getElementById("enableDrawing").addEventListener("click", enableDrawing);
 document.getElementById("disableDrawing").addEventListener("click", disableDrawing);
 document.getElementById("fullscreen").addEventListener("click", fullscreen);
 document.getElementById("cancelfullscreen").addEventListener("click", cancelfullscreen);
+
 document.getElementById("dicom-zoom-in").addEventListener("click", dicomZoomIn);
+
 document.getElementById("dicom-zoom-out").addEventListener("click", dicomZoomOut);
+
 document.getElementById("video-zoom-in").addEventListener("click", videoZoomIn);
+
 document.getElementById("video-zoom-out").addEventListener("click", videoZoomOut);
 document.getElementById("fullscreenDicom").addEventListener("click", dicomFullScreen);
+
  
+
  
 function enableDrawing() {
     drawFlag=true;
@@ -870,18 +1173,23 @@ function enableDrawing() {
 function disableDrawing() {
     drawFlag=false;
  }
+
 ////for remote
 function cancelfullscreenRemote(){
     //   console.log("agaun remote min");
      var drawingSurf=document.getElementById("drawing-surface")
 var ctxDrawsurf= drawingSurf.getContext('2d');
       ctxDrawsurf.clearRect(0,0,1400,1000);
+
 var drawingSurfRemote=document.getElementById("remote-drawing-surface")
 var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
       ctxDrawsurfR.clearRect(0,0,1400,1000);
+
+
     var dicom=document.getElementById("dicom").style.zIndex = "1";
 dicomFullScreen();
     var board=document.getElementById("board").style.zIndex = "2";
+
          //  var el = document.getElementById('board');
  /*
            if(el.webkitRequestFullScreen) {
@@ -895,28 +1203,40 @@ dicomFullScreen();
  //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
    //console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=250;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=percentColabwidth;
   var zoomInWidth= colabEleWidth.toString();
 videoZoomIn.width=zoomInWidth;
+
+
  
+
 }
+
 //////////
 function cancelfullscreen(){
      var drawingSurf=document.getElementById("drawing-surface")
 var ctxDrawsurf= drawingSurf.getContext('2d');
       ctxDrawsurf.clearRect(0,0,1400,1000);
+
 var drawingSurfRemote=document.getElementById("remote-drawing-surface")
 var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
       ctxDrawsurfR.clearRect(0,0,1400,1000);
+
      //  console.log("agaun min");
      //  console.log("dicome full screen old "+dicomUrl);
+
    // console.log("dicome full screen old "+dicomUrlExtra);
+
     var dicom=document.getElementById("dicom").style.zIndex = "1";
 dicomFullScreen();
     var board=document.getElementById("board").style.zIndex = "2";
+
          //  var el = document.getElementById('board');
  /*
            if(el.webkitRequestFullScreen) {
@@ -930,12 +1250,17 @@ dicomFullScreen();
  //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
    //console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=250;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=percentColabwidth;
   var zoomInWidth= colabEleWidth.toString();
 videoZoomIn.width=zoomInWidth;
+
+
 ///send msg to client
 var videoScreenData = {
   "id":"fullscreen",
@@ -943,21 +1268,30 @@ var videoScreenData = {
 }
 //console.log("id"+urlData.id+"  url "+ urlData.url);
  connection.send(JSON.stringify(videoScreenData));
+
+
 }
+
 function fullscreenRemote(){
      var drawingSurf=document.getElementById("drawing-surface")
 var ctxDrawsurf= drawingSurf.getContext('2d');
       ctxDrawsurf.clearRect(0,0,1400,1000);
+
 var drawingSurfRemote=document.getElementById("remote-drawing-surface")
 var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
       ctxDrawsurfR.clearRect(0,0,1400,1000);
+
  //  console.log("agaun remt max");
  //  console.log("dicome full screen old "+dicomUrl);
+
   //  console.log("dicome full screen old "+dicomUrlExtra);
+
 ///////////make the dicome small
 var dicom=document.getElementById("dicom").style.zIndex = "2";
 dicomSmallScreen();
     var board=document.getElementById("board").style.zIndex = "1";
+
+
     /////////////////////////////////////////////
          //  var el = document.getElementById('board');
  /*
@@ -972,27 +1306,41 @@ dicomSmallScreen();
  //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
 //   console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=1200;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=percentColabwidth;
   var zoomInWidth= colabEleWidth.toString();
 videoZoomIn.width=zoomInWidth;
+
  
 //////
+
+
+
+
 }
+
 function fullscreen(){
    //console.log("agaun max");
  var drawingSurf=document.getElementById("drawing-surface")
 var ctxDrawsurf= drawingSurf.getContext('2d');
       ctxDrawsurf.clearRect(0,0,1400,1000);
+
 var drawingSurfRemote=document.getElementById("remote-drawing-surface")
 var ctxDrawsurfR= drawingSurfRemote.getContext('2d');
       ctxDrawsurfR.clearRect(0,0,1400,1000);
+
+
 ///////////make the dicome small
 var dicom=document.getElementById("dicom").style.zIndex = "2";
 dicomSmallScreen();
     var board=document.getElementById("board").style.zIndex = "1";
+
+
     /////////////////////////////////////////////
          //  var el = document.getElementById('board');
  /*
@@ -1007,12 +1355,16 @@ dicomSmallScreen();
  //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
 //   console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=1200;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=percentColabwidth;
   var zoomInWidth= colabEleWidth.toString();
 videoZoomIn.width=zoomInWidth;
+
 ///send msg to client
 var videoScreenData = {
   "id":"fullscreen",
@@ -1020,20 +1372,32 @@ var videoScreenData = {
 }
 //console.log("id"+urlData.id+"  url "+ urlData.url);
  connection.send(JSON.stringify(videoScreenData));
+
+
+
 //////
+
+
+
+
 }
 var  videoZoomIn = document.getElementById('board');
+
 function videoZoomIn(){
 var colabEleStyle = videoZoomIn;
  //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
   // console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=(colabEleWidth /100)*10;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=colabEleWidth+percentColabwidth;
   var zoomInWidth= colabEleWidth.toString();
 videoZoomIn.width=zoomInWidth;
+
       
 }
 function videoZoomOut(){
@@ -1041,7 +1405,10 @@ var colabEleStyle = videoZoomIn;
 // console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
  //  console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=(colabEleWidth /100)*10;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=colabEleWidth-percentColabwidth;
@@ -1050,31 +1417,42 @@ videoZoomIn.width=zoomInWidth;
       
 }
 var dicomeZoomInImage;
+
  
+
 function dicomFullScreen(){
    /// console.log("dicome full screen old "+dicomUrl);
+
    // console.log("dicome full screen old "+dicomUrlExtra);
+
+
                     var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
  var colabEleWidth = parseFloat(colabEleStyle.width);
   var colabEleHeight= parseFloat(colabEleStyle.height);
  
  // var percentColabwidth=(colabEleWidth /100)*70;
  
+
       var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
      ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
         var w=parseFloat(img.width);
         var h=parseFloat(img.height);
+
  if(w<colabEleWidth || h<colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
    //    console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1092,19 +1470,27 @@ function dicomFullScreen(){
            //  console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
+
  if(w>colabEleWidth || h>colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
      //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1122,12 +1508,19 @@ function dicomFullScreen(){
             // console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
   if(w<colabEleWidth){
   //   console.log(w+"  "+colabEleWidth);
+
+
  }
         //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
@@ -1140,33 +1533,49 @@ var dicomScreenData = {
 }
 //console.log("id"+urlData.id+"  url "+ urlData.url);
  connection.send(JSON.stringify(dicomScreenData));
+
+
+
 //////  
+
     
          
 }
+
+
+
+
+
 ///////////////
 function dicomFullScreenRemote(){
+
                     var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
  var colabEleWidth = parseFloat(colabEleStyle.width);
   var colabEleHeight= parseFloat(colabEleStyle.height);
  
  // var percentColabwidth=(colabEleWidth /100)*70;
  
+
       var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
      ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
         var w=parseFloat(img.width);
         var h=parseFloat(img.height);
+
  if(w<colabEleWidth || h<colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
     //   console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1184,19 +1593,27 @@ function dicomFullScreenRemote(){
           //   console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
+
  if(w>colabEleWidth || h>colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
      //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1214,43 +1631,63 @@ function dicomFullScreenRemote(){
             // console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
   if(w<colabEleWidth){
    //  console.log(w+"  "+colabEleWidth);
+
+
  }
         //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
     img.src = dicomUrl;
     
+
     
          
 }
+
+
+
+
 ////
+
 function dicomSmallScreen(){
+
                     //var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
  var colabEleWidth = 250;
   var colabEleHeight= 250;
  
  // var percentColabwidth=(colabEleWidth /100)*70;
  
+
       var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
      ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
         var w=parseFloat(img.width);
         var h=parseFloat(img.height);
+
  if(w<colabEleWidth || h<colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
       // console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1268,19 +1705,27 @@ function dicomSmallScreen(){
           //   console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
+
  if(w>colabEleWidth || h>colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
      //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1298,45 +1743,68 @@ function dicomSmallScreen(){
            //  console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
   if(w<colabEleWidth){
    //  console.log(w+"  "+colabEleWidth);
+
+
  }
         //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
     img.src = dicomUrl;
     
 ////
+
  
+
     
          
 }
+
+
+
+
+
+
+
 //////
 function dicomSmallScreenRemote(){
+
                     //var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
  var colabEleWidth = 250;
   var colabEleHeight= 250;
  
  // var percentColabwidth=(colabEleWidth /100)*70;
  
+
       var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
      ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
         var w=parseFloat(img.width);
         var h=parseFloat(img.height);
+
  if(w<colabEleWidth || h<colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
       // console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w>(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h>(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1354,19 +1822,27 @@ function dicomSmallScreenRemote(){
            //  console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
+
  if(w>colabEleWidth || h>colabEleHeight){
      //console.log(w+"  "+colabEleWidth);
   var perW= w/100;
   var perH= h/100;
+
      //  console.log(" h"+colabEleHeight+"  w"+colabEleWidth+"  w%"+perW+"  h%"+perH);
        for (i = 0; i < 300; i++) {
         if (w<(colabEleWidth- perW) || w==(colabEleWidth- perW)) {
             break;
         }
+
          if (h<(colabEleHeight- perH) || h==(colabEleHeight- perH)) {
             break;
         }
@@ -1384,12 +1860,19 @@ function dicomSmallScreenRemote(){
             // console.log("height "+h);
  
         }
+
  }
+
                 ctximg.drawImage(img, 0, 0, w, h);
                       return;
+
+
  }
+
   if(w<colabEleWidth){
    //  console.log(w+"  "+colabEleWidth);
+
+
  }
         //ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
@@ -1397,16 +1880,31 @@ function dicomSmallScreenRemote(){
     
 ////
  
+
     
          
 }
+
+
+
+
+
+
+
+
 ///
+
 function dicomZoomIn(){
+
+
  var colabEleStyle = dicomeZoomInImage;
  //console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
  //  console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=(colabEleWidth /100)*2;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=colabEleWidth+percentColabwidth;
@@ -1414,18 +1912,27 @@ function dicomZoomIn(){
 var zoomInWidth= colabEleWidth.toString();
 dicomeZoomInImage.width=zoomInWidth;
      //  console.log("parsed tostring "+zoomInWidth);
+
  var colabEleHeight = parseFloat(colabEleStyle.height);
   //colabEleHeight=colabEleHeight+100;
+
    //console.log("parsed height "+colabEleHeight);
+
+
  var  percentColabHeight=(colabEleHeight /100)*2;
         colabEleHeight=colabEleHeight+percentColabHeight;
+
  var zoomInHeight= colabEleHeight.toString();
    dicomeZoomInImage.height=zoomInHeight;
       // console.log("parsed tostring height "+zoomInHeight);
+
   
+
+
       var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
      ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
  
         ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
@@ -1434,12 +1941,18 @@ dicomeZoomInImage.width=zoomInWidth;
     
          
 }
+
 function dicomZoomOut(){
+
+
  var colabEleStyle = dicomeZoomInImage;
 // console.log("no parsed"+colabEleStyle.width);
  var colabEleWidth = parseFloat(colabEleStyle.width);
 //  colabEleWidth=colabEleWidth+100;
+
   // console.log("parsed "+colabEleWidth);
+
+
   percentColabwidth=(colabEleWidth /100)*2;
      // console.log("parsed %  "+percentColabwidth);
        colabEleWidth=colabEleWidth-percentColabwidth;
@@ -1447,18 +1960,27 @@ function dicomZoomOut(){
 var zoomInWidth= colabEleWidth.toString();
 dicomeZoomInImage.width=zoomInWidth;
        //console.log("parsed tostring "+zoomInWidth);
+
  var colabEleHeight = parseFloat(colabEleStyle.height);
   //colabEleHeight=colabEleHeight+100;
+
    ////console.log("parsed height "+colabEleHeight);
+
+
  var  percentColabHeight=(colabEleHeight /100)*2;
         colabEleHeight=colabEleHeight-percentColabHeight;
+
  var zoomInHeight= colabEleHeight.toString();
    dicomeZoomInImage.height=zoomInHeight;
       // console.log("parsed tostring height "+zoomInHeight);
+
   
+
+
       var ctximg = $("#dicom")[0].getContext("2d"),
         img = new Image();
      ctximg.clearRect(0,0,1400,1000);
+
     img.onload = function(){
  
         ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
@@ -1468,4 +1990,711 @@ dicomeZoomInImage.width=zoomInWidth;
          
 }
  </script>
-Contact GitHub 
+
+
+ <script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+
+
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";
+e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
+  "js-agent.newrelic.com/nr-100.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","bam.nr-data.net","35bb71d9c5","1717595","JQ1aFhAMClhVEx4MVxE9UA0BFgtRXhVQFlsJDBsUCwYR",11,7,new Date().getTime(),"","","","",""]);</script>
+<script type="text/javascript" src="js/nr-100.js"></script><script type="text/javascript" src="js/35bb71d9c5"></script> 
+
+<script type="text/javascript">
+    
+
+
+   var ctxHandCanvas=null;
+  var widthHandCanvas=null;
+ var heightHandCanvas= null;
+ var leapMinX= -300;
+ var leapMaxX= 300;
+ var leapMinY= 150;
+ var leapMaxY= 700;
+ var leapMinZ= -180;
+ var leapMaxZ=180;
+   var el = document.getElementById("leap-overlay");
+
+            var colabEleStyle = window.getComputedStyle(document.getElementById("canvasesdiv"));
+
+ var colabEleWidth = parseFloat(colabEleStyle.width);
+  var colabEleHeight= parseFloat(colabEleStyle.height);
+ 
+   var w = widthHandCanvas = colabEleWidth;
+    var h = heightHandCanvas = colabEleHeight;
+
+    $(el).attr('width', w).css('width', w).attr('height', h).css('height', h);
+   // $(el).css('position', 'absolute').css('left', '0').css('top', '0');
+
+   ctxHandCanvas = el.getContext("2d");
+    ctxHandCanvas.fillStyle = "#f0c295";
+
+
+ function drawScalled(obj) {
+
+  
+
+var red = '#F00', green = '#0F0', blue = '#00F', purple = '#A0F';
+// Create an array to save circle properties
+var fill=true;
+var color=red;
+ var   handObj = {
+    "id":"hand",
+  
+    "pointables1": {
+      "index1":{},
+      "index2":{},
+      "index3":{},
+      "index4":{},
+      "index5":{}
+       
+    },
+     "pointables2": {
+       "index1":{},
+      "index2":{},
+      "index3":{},
+      "index4":{},
+      "index5":{}
+       
+    },
+     "pointables3": {
+       "index1":{},
+      "index2":{},
+      "index3":{},
+      "index4":{},
+      "index5":{}
+       
+    },
+
+    "hands": {
+       
+    }
+ }
+ 
+        var pointablesMap = obj.pointables;
+//handObj.pointables=JSON.stringify(pointablesMap);
+handObj.hands=JSON.stringify(obj.hands);
+//console.log("objj"+JSON.stringify(handObj));
+
+  if (flagopen) {
+         connection.send(JSON.stringify(handObj));
+         ///
+          //pointables
+      }
+
+     ctxHandCanvas.clearRect(0, 0,  widthHandCanvas,  heightHandCanvas);
+
+
+
+
+//if (drawFlag) {
+/*
+       if (typeof(obj.hands) != 'undefined' && obj.hands.length > 0) {
+          var targets = [];
+
+          for (var i=0; i<obj.hands.length; i++) {
+            var hand = obj.hands[i];
+    if(hand.pinchStrength > 0){
+    //var pinchingFinger = findPinchingFinger(hand);
+    console.log("pinch done");
+}
+
+}
+}
+*/
+
+drawFlag=false;
+
+       if (typeof(obj.hands) != 'undefined' && obj.hands.length > 0) {
+          var targets = [];
+
+          for (var i=0; i<obj.hands.length; i++) {
+            var hand = obj.hands[i];
+              if(hand.pinchStrength > 0.1){
+drawFlag=true;
+              }
+            var x = hand.palmPosition[0];
+            var y = hand.palmPosition[1];
+            var z = hand.palmPosition[2];
+        }
+    }
+    if (drawFlag) {
+             var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+var poscircle=[];
+poscircle[0]=posX;
+poscircle[1]=posY;
+
+         drawCircle(poscircle, 10, color, fill);
+    }
+
+    
+//}
+          // console.log("hand objjjj"+ handObj.hands);
+var count=0;
+
+     
+///hardCoding
+
+     var pointable = pointablesMap[0];
+      var pos = pointable.tipPosition;
+      var pos1 = pointable.pipPosition;
+      var pos2 = pointable.carpPosition;
+
+      handObj.pointables1.index1=pos;
+      handObj.pointables2.index1=pos1;
+      handObj.pointables3.index1=pos2;
+
+       var pointable = pointablesMap[1];
+      var pos = pointable.tipPosition;
+      var pos1 = pointable.pipPosition;
+      var pos2 = pointable.carpPosition;
+
+      handObj.pointables1.index2=pos;
+      handObj.pointables2.index2=pos1;
+      handObj.pointables3.index2=pos2;
+
+       var pointable = pointablesMap[2];
+      var pos = pointable.tipPosition;
+      var pos1 = pointable.pipPosition;
+      var pos2 = pointable.carpPosition;
+
+      handObj.pointables1.index3=pos;
+      handObj.pointables2.index3=pos1;
+      handObj.pointables3.index3=pos2;
+
+       var pointable = pointablesMap[3];
+      var pos = pointable.tipPosition;
+      var pos1 = pointable.pipPosition;
+      var pos2 = pointable.carpPosition;
+
+      handObj.pointables1.index4=pos;
+      handObj.pointables2.index4=pos1;
+      handObj.pointables3.index4=pos2;
+
+       var pointable = pointablesMap[4];
+      var pos = pointable.tipPosition;
+      var pos1 = pointable.pipPosition;
+      var pos2 = pointable.carpPosition;
+
+      handObj.pointables1.index5=pos;
+      handObj.pointables2.index5=pos1;
+      handObj.pointables3.index5=pos2;
+
+
+
+///hard
+ if (flagopen) {
+         connection.send(JSON.stringify(handObj));
+         ///
+          //pointables
+      }
+
+
+
+    for (var i in pointablesMap) {
+      count=count+1;
+      console.log("count"+count);
+      // get the pointable's position
+      var pointable = pointablesMap[i];
+      var pos = pointable.tipPosition;
+      var pos1 = pointable.pipPosition;
+      var pos2 = pointable.carpPosition;
+
+      handObj.pointables1=pos;
+      handObj.pointables2=pos1;
+      handObj.pointables3=pos2;
+
+ 
+
+       var x = pos[0];
+       var y = pos[1];
+       var z = pos[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 15) { z = 15; }
+        //   console.log("pointables map"+ pointablesMap);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+        var x = pos1[0];
+       var y = pos1[1];
+       var z = pos1[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+ var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+  ctxHandCanvas.beginPath();
+     ctxHandCanvas.moveTo(posX, posY);
+    ctxHandCanvas.lineTo(posX1, posY1);
+      ctxHandCanvas.stroke();
+ 
+       var x = pos2[0];
+       var y = pos2[1];
+       var z = pos2[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill(); 
+      var posX2= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY2= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+ ctxHandCanvas.beginPath();
+      ctxHandCanvas.moveTo(posX1, posY1);
+      ctxHandCanvas.lineTo(posX2, posY2);
+      ctxHandCanvas.stroke();
+
+
+  }
+
+ 
+  }
+
+  function drawScalledRemote(obj) {
+
+ // console.log(obj);
+
+    ctxHandCanvas.fillStyle = "pink";
+
+     ctxHandCanvas.clearRect(0, 0,  widthHandCanvas,  heightHandCanvas);
+
+
+      var pos =  obj.pointables1.index1;
+      var pos1 = obj.pointables2.index1;
+      var pos2 = obj.pointables3.index1;
+
+     
+
+
+
+       var x = pos[0];
+       var y = pos[1];
+       var z = pos[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 15) { z = 15; }
+        //   console.log("pointables map"+ pointablesMap);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+        var x = pos1[0];
+       var y = pos1[1];
+       var z = pos1[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+ var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+  ctxHandCanvas.beginPath();
+     ctxHandCanvas.moveTo(posX, posY);
+    ctxHandCanvas.lineTo(posX1, posY1);
+      ctxHandCanvas.stroke();
+ 
+       var x = pos2[0];
+       var y = pos2[1];
+       var z = pos2[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill(); 
+      var posX2= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY2= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+ ctxHandCanvas.beginPath();
+      ctxHandCanvas.moveTo(posX1, posY1);
+      ctxHandCanvas.lineTo(posX2, posY2);
+      ctxHandCanvas.stroke();
+
+
+ var pos =  obj.pointables1.index2;
+      var pos1 = obj.pointables2.index2;
+      var pos2 = obj.pointables3.index2;
+
+     
+
+
+
+       var x = pos[0];
+       var y = pos[1];
+       var z = pos[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 15) { z = 15; }
+        //   console.log("pointables map"+ pointablesMap);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+        var x = pos1[0];
+       var y = pos1[1];
+       var z = pos1[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+ var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+  ctxHandCanvas.beginPath();
+     ctxHandCanvas.moveTo(posX, posY);
+    ctxHandCanvas.lineTo(posX1, posY1);
+      ctxHandCanvas.stroke();
+ 
+       var x = pos2[0];
+       var y = pos2[1];
+       var z = pos2[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill(); 
+      var posX2= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY2= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+ ctxHandCanvas.beginPath();
+      ctxHandCanvas.moveTo(posX1, posY1);
+      ctxHandCanvas.lineTo(posX2, posY2);
+      ctxHandCanvas.stroke();
+
+
+
+ var pos =  obj.pointables1.index3;
+      var pos1 = obj.pointables2.index3;
+      var pos2 = obj.pointables3.index3;
+
+     
+
+
+
+       var x = pos[0];
+       var y = pos[1];
+       var z = pos[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 15) { z = 15; }
+        //   console.log("pointables map"+ pointablesMap);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+        var x = pos1[0];
+       var y = pos1[1];
+       var z = pos1[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+ var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+  ctxHandCanvas.beginPath();
+     ctxHandCanvas.moveTo(posX, posY);
+    ctxHandCanvas.lineTo(posX1, posY1);
+      ctxHandCanvas.stroke();
+ 
+       var x = pos2[0];
+       var y = pos2[1];
+       var z = pos2[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill(); 
+      var posX2= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY2= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+ ctxHandCanvas.beginPath();
+      ctxHandCanvas.moveTo(posX1, posY1);
+      ctxHandCanvas.lineTo(posX2, posY2);
+      ctxHandCanvas.stroke();
+
+
+
+ var pos =  obj.pointables1.index4;
+      var pos1 = obj.pointables2.index4;
+      var pos2 = obj.pointables3.index4;
+
+     
+
+
+
+       var x = pos[0];
+       var y = pos[1];
+       var z = pos[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 15) { z = 15; }
+        //   console.log("pointables map"+ pointablesMap);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+        var x = pos1[0];
+       var y = pos1[1];
+       var z = pos1[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+ var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+  ctxHandCanvas.beginPath();
+     ctxHandCanvas.moveTo(posX, posY);
+    ctxHandCanvas.lineTo(posX1, posY1);
+      ctxHandCanvas.stroke();
+ 
+       var x = pos2[0];
+       var y = pos2[1];
+       var z = pos2[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill(); 
+      var posX2= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY2= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+ ctxHandCanvas.beginPath();
+      ctxHandCanvas.moveTo(posX1, posY1);
+      ctxHandCanvas.lineTo(posX2, posY2);
+      ctxHandCanvas.stroke();
+
+
+
+ var pos =  obj.pointables1.index5;
+      var pos1 = obj.pointables2.index5;
+      var pos2 = obj.pointables3.index5;
+
+     
+
+
+
+       var x = pos[0];
+       var y = pos[1];
+       var z = pos[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 15) { z = 15; }
+        //   console.log("pointables map"+ pointablesMap);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+        var x = pos1[0];
+       var y = pos1[1];
+       var z = pos1[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill();
+ var posX1= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY1= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+
+
+  ctxHandCanvas.beginPath();
+     ctxHandCanvas.moveTo(posX, posY);
+    ctxHandCanvas.lineTo(posX1, posY1);
+      ctxHandCanvas.stroke();
+ 
+       var x = pos2[0];
+       var y = pos2[1];
+       var z = pos2[2];
+
+            if (z < 10) { z = 10; }
+            if (z > 10) { z = 10; }
+           // console.log("zzzzzzzzzz"+ z);
+          //  targets.push({ 'x': x, 'y': y, 'z': z });
+          
+   ctxHandCanvas.beginPath();
+
+           ctxHandCanvas.arc( scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas),
+                      scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100),
+                     z, 0, Math.PI*2, true);
+       ctxHandCanvas.closePath();
+       ctxHandCanvas.fill(); 
+      var posX2= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+    var posY2= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+ ctxHandCanvas.beginPath();
+      ctxHandCanvas.moveTo(posX1, posY1);
+      ctxHandCanvas.lineTo(posX2, posY2);
+      ctxHandCanvas.stroke();
+
+
+
+ 
+  }
+
+
+  function scale(value, oldMin, oldMax, newMin, newMax) {
+    return (((newMax - newMin) * (value - oldMin)) / (oldMax - oldMin)) + newMin;
+  }
+
+
+</script>
