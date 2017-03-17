@@ -140,7 +140,13 @@ Dicom Url: <input type="url" id="dicomUrl" value="" placeholder="paste dicom lin
             <br />
             <br />
       <button id="switch-camera" >Accept Webcam</button>
-      <button id="switch-microphone"  >Accept Mic</button>   
+      <button id="switch-microphone"  >Accept Mic</button>
+      <input type="range" id="myRange" value=8>
+
+ 
+<button onclick="changeFps()">Change Fps</button>
+ 
+<p style="color: white" id="demo"></p>   
 </div>
 
 
@@ -847,7 +853,6 @@ posdraw[1]=remotepacket.position.y;
 }
 }
  };
-
  
 </script>
 
@@ -995,17 +1000,17 @@ var handData = {
 var dicomUrl="";
 function drawImageDicom(){
     if (dicomUrl) {
-    var ctximg = $("#dicom")[0].getContext("2d"),
+    var ctximg1 = $("#dicom")[0].getContext("2d"),
         img = new Image();
     
-         ctximg.clearRect(0,0,1400,1000);
+         ctximg1.clearRect(0,0,1400,1000);
 
     img.onload = function(){
       var height = img.height;
   var width = img.width;
    dicomeZoomInImage=img;
 
-        ctximg.drawImage(img, 0, 0, width, height);
+        ctximg1.drawImage(img, 0, 0, width, height);
      };
     img.src = dicomUrl;
  }
@@ -1049,10 +1054,11 @@ var circles = [ ];
 //   radius: float > 0
 //   color: string "#RGB"
 //   fill: boolean
+var prevDot=null;
 function drawCircle(center, radius, color, fill) {
-
-    //send drawing to peer\\
+   
  if(drawFlag){
+
     var drawingData = {
   "id":"",
   "position": {
@@ -1076,54 +1082,25 @@ radius=5;
   ctxDrawing.arc(center[0], center[1], radius, 0, 2*Math.PI);
   ctxDrawing.closePath();
   ctxDrawing.lineWidth = 10;
-  // Choose whether to fill or outline the circle
-  //if (fill) {
-    ctxDrawing.fillStyle = color;
-    ctxDrawing.fill();
- // } else {
-  //  ctxDrawing.strokeStyle = color;
-  //  ctxDrawing.stroke();
- // }
-}}
 
 
-function drawCircle(center, radius, color, fill) {
-
-    //send drawing to peer\\
- if(drawFlag){
-    var drawingData = {
-  "id":"",
-  "position": {
-    "x":0 ,
-    "y": 0 
-  }
-}
-            //
-            drawingData.id="drawing";
-            drawingData.position.x=center[0];
-            drawingData.position.y=center[1];
-       
-                connection.send(JSON.stringify(drawingData));
-
-                //
-
-radius=5;
-  // Make an closed arc with a complete rotation
- 
+  ///
+  if(prevDot){
   ctxDrawing.beginPath();
-  ctxDrawing.arc(center[0], center[1], radius, 0, 2*Math.PI);
-  ctxDrawing.closePath();
-  ctxDrawing.lineWidth = 10;
+   ctxDrawing.moveTo(prevDot[0], prevDot[1]);
+   ctxDrawing.lineTo(center[0], center[1]);
+     ctxDrawing.stroke();
+
+}
   // Choose whether to fill or outline the circle
   //if (fill) {
     ctxDrawing.fillStyle = color;
     ctxDrawing.fill();
- // } else {
-  //  ctxDrawing.strokeStyle = color;
-  //  ctxDrawing.stroke();
- // }
-}}
 
+      prevDot = center.slice();
+
+}
+}
 var prevDotRemote=null;
 
 function drawRemoteCircle(center) {
@@ -1144,7 +1121,7 @@ color= purple;
    
      if(prevDotRemote){
   ctxRemoteDrawing.beginPath();
-   ctxRemoteDrawing.moveTo(prevDotRemote[0], prevDotRemote[1]);
+   ctxRemoteDrawing.moveTo(prevDot[0], prevDot[1]);
    ctxRemoteDrawing.lineTo(center[0], center[1]);
      ctxRemoteDrawing.stroke();
 
@@ -1158,9 +1135,6 @@ color= purple;
 
 
 }
-
-
- 
 
 
  
@@ -1450,9 +1424,9 @@ function dicomFullScreen(){
  // var percentColabwidth=(colabEleWidth /100)*70;
  
 
-      var ctximg = $("#dicom")[0].getContext("2d"),
+      var ctximg2 = $("#dicom")[0].getContext("2d"),
         img = new Image();
-     ctximg.clearRect(0,0,1400,1000);
+     ctximg2.clearRect(0,0,1400,1000);
 
     img.onload = function(){
         var w=parseFloat(img.width);
@@ -1489,7 +1463,7 @@ function dicomFullScreen(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg2.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1527,7 +1501,7 @@ function dicomFullScreen(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg2.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1573,9 +1547,9 @@ function dicomFullScreenRemote(){
  // var percentColabwidth=(colabEleWidth /100)*70;
  
 
-      var ctximg = $("#dicom")[0].getContext("2d"),
+      var ctximg3 = $("#dicom")[0].getContext("2d"),
         img = new Image();
-     ctximg.clearRect(0,0,1400,1000);
+     ctximg3.clearRect(0,0,1400,1000);
 
     img.onload = function(){
         var w=parseFloat(img.width);
@@ -1612,7 +1586,7 @@ function dicomFullScreenRemote(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg3.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1650,7 +1624,7 @@ function dicomFullScreenRemote(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg3.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1685,9 +1659,9 @@ function dicomSmallScreen(){
  // var percentColabwidth=(colabEleWidth /100)*70;
  
 
-      var ctximg = $("#dicom")[0].getContext("2d"),
+      var ctximg4 = $("#dicom")[0].getContext("2d"),
         img = new Image();
-     ctximg.clearRect(0,0,1400,1000);
+     ctximg4.clearRect(0,0,1400,1000);
 
     img.onload = function(){
         var w=parseFloat(img.width);
@@ -1724,7 +1698,7 @@ function dicomSmallScreen(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg4.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1762,7 +1736,7 @@ function dicomSmallScreen(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg4.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1802,9 +1776,9 @@ function dicomSmallScreenRemote(){
  // var percentColabwidth=(colabEleWidth /100)*70;
  
 
-      var ctximg = $("#dicom")[0].getContext("2d"),
+      var ctximg5 = $("#dicom")[0].getContext("2d"),
         img = new Image();
-     ctximg.clearRect(0,0,1400,1000);
+     ctximg5.clearRect(0,0,1400,1000);
 
     img.onload = function(){
         var w=parseFloat(img.width);
@@ -1841,7 +1815,7 @@ function dicomSmallScreenRemote(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg5.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1879,7 +1853,7 @@ function dicomSmallScreenRemote(){
 
  }
 
-                ctximg.drawImage(img, 0, 0, w, h);
+                ctximg5.drawImage(img, 0, 0, w, h);
                       return;
 
 
@@ -1945,13 +1919,13 @@ dicomeZoomInImage.width=zoomInWidth;
   
 
 
-      var ctximg = $("#dicom")[0].getContext("2d"),
+      var ctximg6 = $("#dicom")[0].getContext("2d"),
         img = new Image();
-     ctximg.clearRect(0,0,1400,1000);
+     ctximg6.clearRect(0,0,1400,1000);
 
     img.onload = function(){
  
-        ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+        ctximg6.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
     img.src = dicomUrl;
     
@@ -1993,13 +1967,13 @@ dicomeZoomInImage.width=zoomInWidth;
   
 
 
-      var ctximg = $("#dicom")[0].getContext("2d"),
+      var ctximg7 = $("#dicom")[0].getContext("2d"),
         img = new Image();
-     ctximg.clearRect(0,0,1400,1000);
+     ctximg7.clearRect(0,0,1400,1000);
 
     img.onload = function(){
  
-        ctximg.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
+        ctximg7.drawImage(img, 0, 0, zoomInWidth, zoomInHeight);
      };
     img.src = dicomUrl;
     
@@ -2009,6 +1983,126 @@ dicomeZoomInImage.width=zoomInWidth;
 
 
  <script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+  <script>
+var ws;
+var paused = false;
+var pauseOnGesture = false;
+var focusListener;
+var blurListener;
+
+// Support both the WebSocket and MozWebSocket objects
+if ((typeof(WebSocket) == 'undefined') &&
+    (typeof(MozWebSocket) != 'undefined')) {
+  WebSocket = MozWebSocket;
+}
+
+// Create the socket with event handlers
+function init() {
+  // Create and open the socket
+  ws = new WebSocket("ws://localhost:6437/v6.json");//use latest
+
+  // On successful connection
+  ws.onopen = function(event) {
+    var enableMessage = JSON.stringify({enableGestures: true});
+    ws.send(enableMessage); // Enable gestures
+    ws.send(JSON.stringify({focused: true})); // claim focus
+    
+    focusListener = window.addEventListener('focus', function(e) {
+        ws.send(JSON.stringify({focused: true})); // claim focus
+     });
+
+    blurListener = window.addEventListener('blur', function(e) {
+         ws.send(JSON.stringify({focused: false})); // relinquish focus
+     });
+     
+    document.getElementById("main").style.visibility = "visible";
+    document.getElementById("connection").innerHTML = "WebSocket connection open!";
+  };
+
+  // On message received
+  ws.onmessage = function(event) {
+    if (!paused) {
+      var obj = JSON.parse(event.data);
+      var str = JSON.stringify(obj, undefined, 2);
+      if(!obj.id){
+          document.getElementById("eventoutput").innerHTML = '<pre>' + str + '</pre>';
+      } else {
+          document.getElementById("frameoutput").innerHTML = '<pre>' + str + '</pre>';
+        
+//if (event.data.pointables) {
+  //drawFullHand(obj);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+      if (typeof(obj.hands) != 'undefined' && obj.hands.length > 0) {
+        
+objHandSend=obj;
+          //drawScalled(obj);
+        }
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+ 
+       // console.log(obj.pointables);
+
+      }
+      if (pauseOnGesture && obj.gestures.length > 0) {
+        togglePause();
+      }
+    }
+  };
+
+  // On socket close
+  ws.onclose = function(event) {
+    ws = null;
+    window.removeListener("focus", focusListener);
+    window.removeListener("blur", blurListener);
+    document.getElementById("main").style.visibility = "hidden";
+    document.getElementById("connection").innerHTML = "WebSocket connection closed";
+  }
+
+  // On socket error
+  ws.onerror = function(event) {
+    alert("Received error");
+  };
+}
+
+function togglePause() {
+  paused = !paused;
+
+  if (paused) {
+    document.getElementById("pause").innerText = "Resume";
+    ws.send(JSON.stringify({focused: false})); // relinquish focus
+  } else {
+    document.getElementById("pause").innerText = "Pause";
+    ws.send(JSON.stringify({focused: true})); // request focus
+  }
+}
+
+function pauseForGestures() {
+  if (document.getElementById("pauseOnGesture").checked) {
+    pauseOnGesture = true;
+  } else {
+    pauseOnGesture = false;
+  }
+}
+
+var objHandSend;
+
+</script>
 
 
 <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
@@ -2055,7 +2149,14 @@ NREUMQ.push(["nrfj","bam.nr-data.net","35bb71d9c5","1717595","JQ1aFhAMClhVEx4MVx
     ctxHandCanvas.fillStyle = "#f0c295";
 
 
- function drawScalled(obj) {
+  function scale(value, oldMin, oldMax, newMin, newMax) {
+    return (((newMax - newMin) * (value - oldMin)) / (oldMax - oldMin)) + newMin;
+  }
+
+
+
+var objHandSend;
+ function drawScalled2(obj) {
 
   
 
@@ -2150,7 +2251,7 @@ var poscircle=[];
 poscircle[0]=posX;
 poscircle[1]=posY;
 
-         drawCircle(poscircle, 10, color, fill);
+        drawCircle(poscircle, 10, color, fill);
     }
 
     
@@ -2219,7 +2320,7 @@ var count=0;
 
     for (var i in pointablesMap) {
       count=count+1;
-      console.log("count"+count);
+     // console.log("count"+count);
       // get the pointable's position
       var pointable = pointablesMap[i];
       var pos = pointable.tipPosition;
@@ -2306,10 +2407,116 @@ var count=0;
  
   }
 
+
+
+
+
+
+
+window.requestAnimationFrame = function() {
+  return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    function(f) {
+      window.setTimeout(f,1e3/60);
+    }
+}();
+
+//var $ = document.querySelector.bind(document);
+
+ //30 was better
+//50 wasnt good enough
+var fps = 8;
+function changeFps() {
+    fps=document.getElementById("myRange").value ;
+        var x = document.getElementById("myRange").value;
+    document.getElementById("demo").innerHTML = x;
+}
+var now;
+var then = Date.now();
+var interval;
+var delta;
+
+// For this demo
+var counter = 0;
+var first = then;
+
+/*var second_since = Date.now();
+var second = 0;
+var second_fps = 0;*/
+ 
+function draw() {
+  
+   interval= 1000/fps;
+  // Calculating REAL FPS
+  /*if (second > 1000) {
+    second_since = Date.now();
+    second = 0;
+    
+    console.log(second_fps);
+    
+    second_fps = 0;
+  }
+  else {
+    second = Date.now() - second_since;
+    ++second_fps;
+  }*/
+  
+  requestAnimationFrame(draw);
+  
+  now = Date.now();
+  delta = now - then;
+  //console.log(delta);
+  //console.log("value changes "+ interval);
+  if (delta > interval) {
+    // update time stuffs
+    
+    // Just `then = now` is not enough.
+    // Lets say we set fps at 10 which means
+    // each frame must take 100ms
+    // Now frame executes in 16ms (60fps) so
+    // the loop iterates 7 times (16*7 = 112ms) until
+    // delta > interval === true
+    // Eventually this lowers down the FPS as
+    // 112*10 = 1120ms (NOT 1000ms).
+    // So we have to get rid of that extra 12ms
+    // by subtracting delta (112) % interval (100).
+    // Hope that makes sense.
+    
+    then = now - (delta % interval);
+    
+    // ... Code for Drawing the Frame ...
+    var time_el = (then - first)/1000;
+    
+
+
+
+///hard
+ //if (flagopen) {
+  if(objHandSend){
+       //  connection.send(JSON.stringify(handObj));
+     //    console.log("sent now!"+JSON.stringify(objHandSend));
+      
+      drawScalled2(objHandSend);
+         ///
+          //pointables
+      }
+//}
+//console.log("now!");
+  }
+}
+ 
+draw();
+
+
+
+
+
   function drawScalledRemote(obj) {
 
- // console.log(obj);
-
+  //console.log(obj);
     ctxHandCanvas.fillStyle = "pink";
 
      ctxHandCanvas.clearRect(0, 0,  widthHandCanvas,  heightHandCanvas);
@@ -2705,11 +2912,6 @@ var count=0;
 
 
  
-  }
-
-
-  function scale(value, oldMin, oldMax, newMin, newMax) {
-    return (((newMax - newMin) * (value - oldMin)) / (oldMax - oldMin)) + newMin;
   }
 
 
