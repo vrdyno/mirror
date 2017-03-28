@@ -1146,9 +1146,10 @@ color= green;
   ctxRemoteDrawing.beginPath();
    ctxRemoteDrawing.moveTo(prevDotRemote[0], prevDotRemote[1]);
    ctxRemoteDrawing.lineTo(center[0], center[1]);
+   ctxRemoteDrawing.strokeStyle=green;
      ctxRemoteDrawing.stroke();
 
-}
+
   // Choose whether to fill or outline the circle
   //if (fill) {
     ctxRemoteDrawing.fillStyle = color;
