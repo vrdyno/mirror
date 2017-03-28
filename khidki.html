@@ -1130,7 +1130,7 @@ function drawRemoteCircle(center) {
        
 radius=5;
 fill=true;
-color= green;
+color= purple;
   // Make an closed arc with a complete rotation
   
   ctxRemoteDrawing.beginPath();
@@ -1146,8 +1146,10 @@ color= green;
   ctxRemoteDrawing.beginPath();
    ctxRemoteDrawing.moveTo(prevDotRemote[0], prevDotRemote[1]);
    ctxRemoteDrawing.lineTo(center[0], center[1]);
-   ctxRemoteDrawing.strokeStyle="#0F0";
+        ctxRemoteDrawing.strokeStyle=green;
+
      ctxRemoteDrawing.stroke();
+
 
 }
   // Choose whether to fill or outline the circle
