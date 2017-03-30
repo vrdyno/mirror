@@ -1127,6 +1127,11 @@ radius=5;
 var prevDotRemote=null;
 
 function drawRemoteCircle(center) {
+           var posX= scale(center[0],  leapMinX,  leapMaxX, -100,  widthHandCanvas);
+  var posY= scale(center[1],  leapMinY,  leapMaxY,  heightHandCanvas, -100);
+  center[0]=posX;
+  center[1]=posY;
+  
        
 radius=5;
 fill=true;
@@ -2325,10 +2330,7 @@ var count=0;
                      z, 0, Math.PI*2, true);
        ctxHandCanvas.closePath();
        ctxHandCanvas.fill();
-    var posX= scale(x,  leapMinX,  leapMaxX, -100,  widthHandCanvas);
-    var posY= scale(y,  leapMinY,  leapMaxY,  heightHandCanvas, -100);
-
-
+   
 
  
   }
